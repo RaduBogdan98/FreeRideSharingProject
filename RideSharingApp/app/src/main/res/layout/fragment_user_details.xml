@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserDetails">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/user_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corners_layout"
+            android:minHeight="220dp"/>
+
+        <TextView
+            android:layout_below="@id/user_image"
+            android:id="@+id/details_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User Details"
+            android:textSize="20dp"
+            android:textColor="#000000"
+            android:layout_margin="10dp"/>
+
+        <RelativeLayout
+            android:layout_below="@+id/details_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_details">
+
+            <EditText
+                android:id="@+id/user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="name"
+                android:textSize="20dp"
+                android:padding="10dp"
+                android:background="@drawable/rounded_corners_layout"/>
+
+            <EditText
+                android:id="@+id/user_age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="age"
+                android:layout_below="@id/user_name"
+                android:textSize="20dp"
+                android:padding="10dp"
+                android:background="@drawable/rounded_corners_layout"/>
+
+            <EditText
+                android:id="@+id/user_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="email"
+                android:layout_below="@id/user_age"
+                android:textSize="20dp"
+                android:padding="10dp"
+                android:background="@drawable/rounded_corners_layout"/>
+
+            <EditText
+                android:id="@+id/user_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="phone number"
+                android:layout_below="@id/user_email"
+                android:textSize="20dp"
+                android:padding="10dp"
+                android:background="@drawable/rounded_corners_layout"/>
+
+            <EditText
+                android:id="@+id/user_licenseID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="license ID"
+                android:layout_below="@id/user_phone"
+                android:textSize="20dp"
+                android:padding="10dp"
+                android:background="@drawable/rounded_corners_layout"/>
+
+            <EditText
+                android:id="@+id/user_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="address"
+                android:layout_below="@id/user_licenseID"
+                android:textSize="20dp"
+                android:padding="10dp"
+                android:background="@drawable/rounded_corners_layout"/>
+        </RelativeLayout>
+
+        <TextView
+            android:layout_below="@id/user_details"
+            android:id="@+id/preferences_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="In Car Preferences"
+            android:textSize="20dp"
+            android:textColor="#000000"
+            android:layout_margin="10dp"/>
+
+        <RelativeLayout
+            android:layout_below="@+id/preferences_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/inCarPreferences"
+            android:layout_marginLeft="10dp">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/animals_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Are animals allowed? "/>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/music_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Do you listen to music? "
+                android:layout_below="@id/animals_switch"/>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/speaking_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Are you a talkative person? "
+                android:layout_below="@id/music_switch"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</FrameLayout>
