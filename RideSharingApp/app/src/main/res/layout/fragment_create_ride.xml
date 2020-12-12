@@ -3,8 +3,238 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateRide">
+    tools:context=".CreateRideFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.5"
+                android:scaleType="centerCrop"
+                android:src="@drawable/car_sight" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/selectStartLocation_btn"
+                        android:layout_width="250sp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="5sp"
+                        android:alpha="0.8"
+                        android:background="@drawable/rounded_corners_layout_ride_buttons"
+                        android:text="Select Start Location"
+                        android:textSize="15sp" />
+
+                    <Button
+                        android:id="@+id/selectDestination_btn"
+                        android:layout_width="250sp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="5sp"
+                        android:alpha="0.8"
+                        android:background="@drawable/rounded_corners_layout_ride_buttons"
+                        android:text="Select Destination"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginVertical="5sp">
+
+                        <Button
+                            android:id="@+id/selectDate_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginHorizontal="20sp"
+                            android:alpha="0.8"
+                            android:background="@drawable/rounded_corners_layout_ride_buttons"
+                            android:paddingHorizontal="20sp"
+                            android:text="Start Date"
+                            android:textSize="15sp" />
+
+                        <Button
+                            android:id="@+id/selectTime_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginHorizontal="20sp"
+                            android:alpha="0.8"
+                            android:background="@drawable/rounded_corners_layout_ride_buttons"
+                            android:paddingHorizontal="20sp"
+                            android:text="Start Time"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.4"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3">
+
+                <ScrollView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical">
+
+                        <LinearLayout
+                            android:id="@+id/startLocation_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10sp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Start Location: "
+                                android:textColor="#000000"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/startLocation_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/destination_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/startLocation_layout"
+                            android:layout_margin="10sp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Destination: "
+                                android:textColor="#000000"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/destination_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/date_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/destination_layout"
+                            android:layout_margin="10sp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Start Date: "
+                                android:textColor="#000000"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/date_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/time_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/date_layout"
+                            android:layout_margin="10sp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Start Time: "
+                                android:textColor="#000000"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/time_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#000000"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </ScrollView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7">
+
+                <Button
+                    android:id="@+id/create_ride"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="10dp"
+                    android:alpha="0.8"
+                    android:background="@drawable/rounded_corners_layout_ride_buttons"
+                    android:paddingHorizontal="30sp"
+                    android:paddingVertical="15sp"
+                    android:text="Create Ride"
+                    android:textSize="20sp" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
 
 
 </FrameLayout>
