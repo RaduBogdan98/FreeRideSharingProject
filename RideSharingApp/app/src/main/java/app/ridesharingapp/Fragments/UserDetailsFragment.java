@@ -1,4 +1,4 @@
-package app.ridesharingapp;
+package app.ridesharingapp.Fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+
+import app.ridesharingapp.R;
 
 public class UserDetailsFragment extends Fragment {
 
