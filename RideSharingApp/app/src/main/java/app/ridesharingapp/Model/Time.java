@@ -16,4 +16,9 @@ public class Time {
     public int getMinute() {
         return minute;
     }
+
+    @Override
+    public String toString() {
+        return hour + ":" + minute;
+    }
 }

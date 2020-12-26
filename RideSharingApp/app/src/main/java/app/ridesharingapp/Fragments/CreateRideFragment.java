@@ -19,9 +19,12 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.Calendar;
 
 import app.ridesharingapp.Database.DatabaseManager;
+import app.ridesharingapp.MainActivity;
 import app.ridesharingapp.MapsActivity;
 import app.ridesharingapp.Model.Date;
 import app.ridesharingapp.Model.Location;
@@ -35,6 +38,7 @@ import static android.app.Activity.RESULT_OK;
 public class CreateRideFragment extends Fragment {
     private int START_ADDRESS_REQUEST = 10;
     private int DESTINATION_ADDRESS_REQUEST = 20;
+    private MainActivity parentAcrivity;
 
     private TextView selectedStartLocationLabel;
     private TextView selectedDestinationLabel;
@@ -44,8 +48,8 @@ public class CreateRideFragment extends Fragment {
     private Date selectedDate;
     private Time selectedTime;
 
-    public CreateRideFragment() {
-        // Required empty public constructor
+    public CreateRideFragment(MainActivity parentAcrivity) {
+        this.parentAcrivity = parentAcrivity;
     }
 
     @Override
@@ -58,6 +62,7 @@ public class CreateRideFragment extends Fragment {
         Button selectStartLocationButton = fragment.findViewById(R.id.selectStartLocation_btn);
         Button selectDestinationButton = fragment.findViewById(R.id.selectDestination_btn);
         Button createRideButton = fragment.findViewById(R.id.create_ride);
+        FloatingActionButton homeButton = fragment.findViewById(R.id.floating_home_button_cr);
 
         final TextView selectedTimeLabel = fragment.findViewById(R.id.time_label);
         final TextView selectedDateLabel = fragment.findViewById(R.id.date_label);
@@ -123,6 +128,13 @@ public class CreateRideFragment extends Fragment {
             }
         });
 
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                parentAcrivity.switchToHomeFragment();
+            }
+        });
+
         // Inflate the layout for this fragment
         return fragment;
     }
@@ -181,11 +193,12 @@ public class CreateRideFragment extends Fragment {
         });
 
         builder.setCancelable(false)
-                .setTitle("Select the number of passengers")
+                .setMessage("Select the number of passengers")
                 .setView(view)
                 .setPositiveButton("Create", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        DatabaseManager.getInstance().addRide(new Ride(startAddress, destinationAddress, selectedDate, selectedTime, Integer.parseInt(numberOfPassengers.getText().toString())));
+                        DatabaseManager.getInstance().addRide(new Ride(DatabaseManager.getInstance().getLoggedUser(), startAddress, destinationAddress, selectedDate, selectedTime, Integer.parseInt(numberOfPassengers.getText().toString())));
+                        parentAcrivity.switchToHomeFragment();
                     }
                 });
         AlertDialog alert = builder.create();

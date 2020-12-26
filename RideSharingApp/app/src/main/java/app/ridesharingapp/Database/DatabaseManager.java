@@ -15,6 +15,7 @@ public class DatabaseManager {
     //Clasa asta va comunica cu baza de date si va adauga si citi informatii din baza de date
     private DatabaseManager(){
         availableRides = new ArrayList<>();
+        loggedUser = new User("Radu"); //asta va disparea
     }
 
     public static DatabaseManager getInstance(){

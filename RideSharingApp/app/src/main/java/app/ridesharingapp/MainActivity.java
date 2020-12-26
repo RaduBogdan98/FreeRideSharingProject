@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import app.ridesharingapp.Fragments.CreateRideFragment;
+import app.ridesharingapp.Fragments.HomeFragment;
 import app.ridesharingapp.Fragments.UserDetailsFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,10 +59,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        switchToHomeFragment();
     }
 
     private void switchToCreateRideFragment() {
-        CreateRideFragment createRideFragment = new CreateRideFragment();
+        CreateRideFragment createRideFragment = new CreateRideFragment(this);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container_view, createRideFragment)
@@ -77,10 +80,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void switchToSearchRideFragment() {
-        CreateRideFragment createRideFragment = new CreateRideFragment();
+        CreateRideFragment createRideFragment = new CreateRideFragment(this);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container_view, createRideFragment)
+                .commit();
+    }
+
+    public void switchToHomeFragment() {
+        HomeFragment homeFragment = new HomeFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container_view, homeFragment)
                 .commit();
     }
 
