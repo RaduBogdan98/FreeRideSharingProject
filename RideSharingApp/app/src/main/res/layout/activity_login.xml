@@ -15,7 +15,27 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/darkBlue"
-            android:layout_weight="0.5"/>
+            android:layout_weight="0.5">
+
+            <RelativeLayout
+                android:id="@+id/carLogo"
+                android:layout_width="220dp"
+                android:layout_height="220dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/circle_shape">
+
+                <ImageView
+                    android:id="@+id/carImage"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/car_logo" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -30,6 +50,7 @@
                 android:text="Log In"
                 android:background="@drawable/rounded_corners_layout"/>
             <Button
+                android:id="@+id/signUpButton"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -57,23 +78,29 @@
             android:background="@drawable/rounded_corners_layout">
 
             <EditText
-                android:id="@+id/emailEdit"
+                android:id="@+id/emailEditLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="5dp"
-                android:background="@color/lightBlue"
-                android:textSize="28dp"/>
+                android:background="@drawable/edit_text_border"
+                android:padding="5sp"
+                android:textSize="21sp"
+                android:hint="email"
+                android:inputType="text"/>
 
             <EditText
-                android:id="@+id/passwordEdit"
+                android:id="@+id/passwordEditLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginBottom="20dp"
-                android:background="@color/lightBlue"
-                android:textSize="28dp"/>
+                android:background="@drawable/edit_text_border"
+                android:padding="5sp"
+                android:textSize="21sp"
+                android:inputType="textPassword"
+                android:hint="password"/>
 
         </LinearLayout>
 
