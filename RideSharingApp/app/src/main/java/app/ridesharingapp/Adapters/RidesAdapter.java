@@ -71,4 +71,8 @@ public class RidesAdapter extends ArrayAdapter<Ride> {
         TextView tDriverName;
         ImageView tDriverIco;
     }
+
+    public List<Ride> getRides() {
+        return rides;
+    }
 }

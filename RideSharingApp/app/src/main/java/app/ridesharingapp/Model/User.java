@@ -79,4 +79,12 @@ public class User {
     public void setLicenseId(String licenseId) {
         this.licenseId = licenseId;
     }
+
+    public void addCar(Car car){
+        this.cars.add(car);
+    }
+
+    public List<Car> getCars(){
+        return cars;
+    }
 }

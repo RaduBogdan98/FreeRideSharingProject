@@ -38,7 +38,7 @@ import static android.app.Activity.RESULT_OK;
 public class CreateRideFragment extends Fragment {
     private int START_ADDRESS_REQUEST = 10;
     private int DESTINATION_ADDRESS_REQUEST = 20;
-    private MainActivity parentAcrivity;
+    private MainActivity parentActivity;
 
     private TextView selectedStartLocationLabel;
     private TextView selectedDestinationLabel;
@@ -48,8 +48,8 @@ public class CreateRideFragment extends Fragment {
     private Date selectedDate;
     private Time selectedTime;
 
-    public CreateRideFragment(MainActivity parentAcrivity) {
-        this.parentAcrivity = parentAcrivity;
+    public CreateRideFragment(MainActivity parentActivity) {
+        this.parentActivity = parentActivity;
     }
 
     @Override
@@ -131,7 +131,7 @@ public class CreateRideFragment extends Fragment {
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                parentAcrivity.switchToHomeFragment();
+                parentActivity.switchToHomeFragment();
             }
         });
 
@@ -198,7 +198,7 @@ public class CreateRideFragment extends Fragment {
                 .setPositiveButton("Create", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         DatabaseManager.getInstance().addRide(new Ride(DatabaseManager.getInstance().getLoggedUser(), startAddress, destinationAddress, selectedDate, selectedTime, Integer.parseInt(numberOfPassengers.getText().toString())));
-                        parentAcrivity.switchToHomeFragment();
+                        parentActivity.switchToHomeFragment();
                     }
                 });
         AlertDialog alert = builder.create();

@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(DatabaseManager.getInstance().findUser(emailText.getText().toString(), passwordText.getText().toString()) == true){
+                if(DatabaseManager.getInstance().findUser(emailText.getText().toString().trim(), passwordText.getText().toString().trim()) == true){
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                 }

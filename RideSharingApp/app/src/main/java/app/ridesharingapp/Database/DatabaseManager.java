@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import app.ridesharingapp.MainActivity;
 import app.ridesharingapp.Model.Ride;
@@ -38,10 +39,10 @@ public class DatabaseManager {
 
     //metoda asta va adauga un user in baza de date
     public boolean addUser(String name, String email, String password, String phoneNumber, int age) {
-        if (!name.equals("")
-                && !email.equals("") && Patterns.EMAIL_ADDRESS.matcher(email).matches()
-                && !password.equals("")
-                && !phoneNumber.equals("") && phoneNumber.length() == 10
+        if (name.length()!=0
+                && email.length()!=0 && Patterns.EMAIL_ADDRESS.matcher(email).matches()
+                && password.length()!=0
+                && phoneNumber.length() == 10
                 && age > 18 && age < 150) {
 
             loggedUser = new User(name, email, password, phoneNumber, age);
@@ -68,6 +69,13 @@ public class DatabaseManager {
     //metoda asta va returna cursele prezente in baza de date la momentul actual
     public List<Ride> retrieveRides() {
         return availableRides;
+    }
+
+    public List<Ride> retreiveRidesForLoggedUser(){
+        return availableRides
+                .stream()
+                .filter((ride) -> ride.getOwner().equals(loggedUser) || ride.getPassengers().contains(loggedUser))
+                .collect(Collectors.toList());
     }
 
     public User getLoggedUser() {
