@@ -1,18 +1,18 @@
 package app.ridesharingapp.Fragments;
 
+import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import java.util.List;
-
 import app.ridesharingapp.Adapters.RidesAdapter;
 import app.ridesharingapp.Database.DatabaseManager;
-import app.ridesharingapp.Model.Ride;
 import app.ridesharingapp.R;
 
 public class HomeFragment extends Fragment {
@@ -25,10 +25,23 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View fragment = inflater.inflate(R.layout.fragment_home, container, false);
 
-        ListView listPayments = (ListView) fragment.findViewById(R.id.rides_list);
+        final TextView noRidesText = fragment.findViewById(R.id.no_rides_text);
+        ListView listPayments = fragment.findViewById(R.id.rides_list);
 
-        final RidesAdapter adapter = new RidesAdapter(getContext(), R.layout.ride_details_card, DatabaseManager.getInstance().retrieveRides());
+        final RidesAdapter adapter = new RidesAdapter(getContext(), R.layout.ride_details_card, DatabaseManager.getInstance().retreiveRidesForLoggedUser());
         listPayments.setAdapter(adapter);
+
+        adapter.registerDataSetObserver(new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                if(!adapter.getRides().isEmpty()){
+                    noRidesText.setVisibility(View.INVISIBLE);
+                }
+                else{
+                    noRidesText.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         return fragment;
     }

@@ -19,6 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import app.ridesharingapp.Database.DatabaseManager;
 import app.ridesharingapp.Fragments.CreateRideFragment;
 import app.ridesharingapp.Fragments.HomeFragment;
+import app.ridesharingapp.Fragments.SearchRideFragment;
 import app.ridesharingapp.Fragments.UserDetailsFragment;
 import app.ridesharingapp.Model.User;
 import app.ridesharingapp.Services.ApiClient;
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void switchToUserDetailsFragment() {
-        UserDetailsFragment createRideFragment = new UserDetailsFragment();
+        UserDetailsFragment createRideFragment = new UserDetailsFragment(this);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container_view, createRideFragment)
@@ -89,10 +90,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void switchToSearchRideFragment() {
-        CreateRideFragment createRideFragment = new CreateRideFragment(this);
+        SearchRideFragment searchRideFragment = new SearchRideFragment(this);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container_view, createRideFragment)
+                .replace(R.id.fragment_container_view, searchRideFragment)
                 .commit();
     }
 
@@ -114,11 +115,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        showDialog();
+        showConnectToInternetDialog();
         return false;
     }
 
-    private void showDialog() {
+    private void showConnectToInternetDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Please connect to the internet")
                 .setCancelable(false)

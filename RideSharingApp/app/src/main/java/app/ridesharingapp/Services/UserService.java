@@ -1,5 +1,6 @@
 package app.ridesharingapp.Services;
 
+import app.ridesharingapp.Model.Requests.AddCarRequest;
 import app.ridesharingapp.Model.Requests.LoginRequest;
 import app.ridesharingapp.Model.Responses.LoginResponse;
 import app.ridesharingapp.Model.User;
@@ -21,6 +22,11 @@ public interface UserService {
 
     @GET("api/users/user/{userEmail}")
     Call<User> getUserDetails(@Path("userEmail") String userEmail);
+
+
+    @POST("api/users/user/addCar")
+    Call<User> addCar(@Body AddCarRequest addCarRequest);
+
 
     @Multipart
     @POST("api/users/user/upload/{userEmail}")

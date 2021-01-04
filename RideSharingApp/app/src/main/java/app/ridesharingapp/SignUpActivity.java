@@ -30,11 +30,11 @@ public class SignUpActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = nameEdit.getText().toString();
-                String email = emailEdit.getText().toString();
-                String password = passwordEdit.getText().toString();
-                String phoneNumber = phoneNumberEdit.getText().toString();
-                int age = Integer.parseInt(ageEdit.getText().toString());
+                String name = nameEdit.getText().toString().trim();
+                String email = emailEdit.getText().toString().trim();
+                String password = passwordEdit.getText().toString().trim();
+                String phoneNumber = phoneNumberEdit.getText().toString().trim();
+                int age = Integer.parseInt(ageEdit.getText().toString().trim());
 
 //                if(DatabaseManager.getInstance().addUser(name, email, password, phoneNumber, age)){
 //                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);

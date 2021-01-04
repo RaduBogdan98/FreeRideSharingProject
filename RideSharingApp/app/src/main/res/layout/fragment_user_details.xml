@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.UserDetailsFragment">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -71,7 +71,8 @@
                         android:drawablePadding="30dp"
                         android:maxLines="1"
                         android:padding="10dp"
-                        android:textSize="20dp" />
+                        android:textSize="20dp"
+                        android:inputType="textCapWords"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
@@ -90,7 +91,8 @@
                         android:drawablePadding="30dp"
                         android:maxLines="1"
                         android:padding="10dp"
-                        android:textSize="20dp" />
+                        android:textSize="20dp"
+                        android:inputType="text"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -108,7 +110,8 @@
                         android:background="@drawable/rounded_corners_layout"
                         android:maxLines="1"
                         android:padding="10dp"
-                        android:textSize="20dp" />
+                        android:textSize="20dp"
+                        android:inputType="textEmailAddress"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -126,7 +129,9 @@
                         android:background="@drawable/rounded_corners_layout"
                         android:maxLines="1"
                         android:padding="10dp"
-                        android:textSize="20dp" />
+                        android:textSize="20dp"
+                        android:inputType="phone"
+                        android:maxLength="10"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
@@ -143,7 +148,9 @@
                         android:background="@drawable/rounded_corners_layout"
                         android:maxLines="1"
                         android:padding="10dp"
-                        android:textSize="20dp" />
+                        android:textSize="20dp"
+                        android:inputType="text"
+                        android:maxLength="10"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
@@ -160,7 +167,8 @@
                         android:background="@drawable/rounded_corners_layout"
                         android:maxLines="1"
                         android:padding="10dp"
-                        android:textSize="20dp" />
+                        android:textSize="20dp"
+                        android:inputType="text"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
@@ -168,7 +176,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/address_input_layout"
-                    android:hint="EmaiL Verified">
+                    android:hint="Email Verified">
 
                     <EditText
                         android:id="@+id/user_emailVerified"
@@ -177,6 +185,7 @@
                         android:background="@drawable/rounded_corners_layout"
                         android:maxLines="1"
                         android:padding="10dp"
+                        android:focusable="false"
                         android:textSize="20dp" />
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
@@ -193,6 +202,7 @@
                         android:background="@drawable/rounded_corners_layout"
                         android:maxLines="1"
                         android:padding="10dp"
+                        android:focusable="false"
                         android:textSize="20dp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -210,6 +220,7 @@
                         android:background="@drawable/rounded_corners_layout"
                         android:maxLines="1"
                         android:padding="10dp"
+                        android:focusable="false"
                         android:textSize="20dp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -279,6 +290,7 @@
                         android:background="@drawable/rounded_corners_layout"
                         android:maxLines="1"
                         android:padding="10dp"
+                        android:focusable="false"
                         android:textSize="20dp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -300,12 +312,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cars_label">
 
-                <ListView
+                <app.ridesharingapp.LayoutElements.NonScrollListView
                     android:id="@+id/cars_list"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                </ListView>
+                    android:layout_height="wrap_content"
+                    android:dividerHeight="4dp"
+                    android:layout_marginHorizontal="5dp"/>
 
                 <Button
                     android:id="@+id/addCarButton"
@@ -314,46 +326,8 @@
                     android:layout_below="@id/cars_list"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/rounded_corners_layout_ride_buttons"
-                    android:text="Add a car" />
-
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/preferences_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/cars_area"
-                android:layout_margin="10dp"
-                android:text="In Car Preferences"
-                android:textColor="#000000"
-                android:textSize="20dp" />
-
-            <RelativeLayout
-                android:id="@+id/inCarPreferences"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/preferences_label"
-                android:layout_marginLeft="10dp">
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/animals_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Are animals allowed? " />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/music_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/animals_switch"
-                    android:text="Do you listen to music? " />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/speaking_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/music_switch"
-                    android:text="Are you a talkative person? " />
+                    android:text="Add a car"
+                    android:layout_marginVertical="10dp"/>
 
             </RelativeLayout>
 
@@ -369,5 +343,5 @@
 
         </RelativeLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>

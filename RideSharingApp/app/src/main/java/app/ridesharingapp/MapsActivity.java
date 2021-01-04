@@ -24,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -45,6 +46,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap map;
     private FloatingActionButton searchButton;
     private Address selectedAddress;
+    private Marker currentMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +115,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
 
                             //Add marker to map
-                            googleMap.addMarker(options);
+                            currentMarker = googleMap.addMarker(options);
 
                             setSelectedAddress(latLng);
                         }
@@ -166,8 +168,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             //Zoom map
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
 
+            //Remove last marker
+            currentMarker.remove();
+
             //Add marker to map
-            map.addMarker(options);
+            currentMarker = map.addMarker(options);
             setSelectedAddress(latLng);
         }else if(resultCode == AutocompleteActivity.RESULT_ERROR){
             Status status = Autocomplete.getStatusFromIntent(data);

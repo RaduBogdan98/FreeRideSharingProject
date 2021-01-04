@@ -28,7 +28,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        SharedPreferenceUtil.saveEmail(null,getApplicationContext());
+        SharedPreferenceUtil.savePassword(null,getApplicationContext());
         if(SharedPreferenceUtil.getEmail(this) !=null){
             Intent intent = new Intent(LoginActivity.this,MainActivity.class);
             startActivity(intent);
@@ -50,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//<<<<<<< HEAD
                 login(emailText.getText().toString(),passwordText.getText().toString());
             }
         });
@@ -79,6 +81,14 @@ public class LoginActivity extends AppCompatActivity {
                     },500);
                 }else{
                     Toast.makeText(LoginActivity.this, "Login Failed",Toast.LENGTH_LONG).show();
+//=======
+//                if(DatabaseManager.getInstance().findUser(emailText.getText().toString().trim(), passwordText.getText().toString().trim()) == true){
+//                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                    startActivity(intent);
+//                }
+//                else{
+//                    Toast.makeText(getApplicationContext(), "Log In Failed!", Toast.LENGTH_SHORT).show();
+//>>>>>>> master
                 }
             }
 

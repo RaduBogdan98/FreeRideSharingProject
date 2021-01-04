@@ -26,6 +26,7 @@ public class User {
     private int age;
     private List<Car> cars;
 
+    public User(){}
     public User(String _id, String name, String surname, String email, String phoneNumber, String password, String username, String address, Boolean emailVerified, Boolean active, String role, String token, String cid, Number userScore, String image, Location location, String method, int age, List<Car> cars) {
         this._id = _id;
         this.name = name;
@@ -199,4 +200,12 @@ public class User {
     public void setCars(List<Car> cars) {
         this.cars = cars;
     }
+
+    public void addCar(Car car){
+        this.cars.add(car);
+    }
+
+//    public List<Car> getCars(){
+//        return cars;
+//    }
 }

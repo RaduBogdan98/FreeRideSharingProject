@@ -1,19 +1,28 @@
 package app.ridesharingapp.Fragments;
 import android.os.Bundle;
 import android.os.Handler;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
 
 import com.squareup.picasso.Picasso;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import app.ridesharingapp.Adapters.CarsAdapter;
 import app.ridesharingapp.Database.DatabaseManager;
+import app.ridesharingapp.LayoutElements.NonScrollListView;
+import app.ridesharingapp.MainActivity;
+import app.ridesharingapp.Model.Requests.AddCarRequest;
 import app.ridesharingapp.Model.User;
 import app.ridesharingapp.R;
 import app.ridesharingapp.Services.ApiClient;
@@ -23,16 +32,22 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserDetailsFragment extends Fragment {
+    private MainActivity parentActivity;
+    private CarsAdapter adapter;
 
-    public UserDetailsFragment() {
-        // Required empty public constructor
+    private User loggedUser;
+    public UserDetailsFragment(MainActivity parentActivity) {
+        this.parentActivity = parentActivity;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View fragment = inflater.inflate(R.layout.fragment_user_details, container, false);
         ImageView imageView = (ImageView) fragment.findViewById(R.id.user_image);
         EditText IdEdit = fragment.findViewById(R.id.user_id);
+
+        //User details area handling
         EditText nameEdit = fragment.findViewById(R.id.user_name);
         EditText surnameEdit = fragment.findViewById(R.id.user_surname);
         EditText emailEdit = fragment.findViewById(R.id.user_email);
@@ -47,63 +62,236 @@ public class UserDetailsFragment extends Fragment {
         EditText ageEdit = fragment.findViewById(R.id.user_age);
         EditText googleEdit = fragment.findViewById(R.id.user_google);
 
+
         getUserDetails(IdEdit,nameEdit,surnameEdit,emailEdit,phoneEdit,usernameEdit,addressEdit,emailVerified,activeEdit,roleEdit,CIDEdit,userScoreEdit,ageEdit,googleEdit,imageView);
 
-        Button addCarButton = fragment.findViewById(R.id.addCarButton);
+        nameEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loggedUser.setName(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        ageEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loggedUser.setAge(Integer.parseInt(s.toString()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        emailEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loggedUser.setEmail(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        phoneEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loggedUser.setPhoneNumber(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        CIDEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loggedUser.setCid(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        addressEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loggedUser.setAddress(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+        //Car details area handling
+        Button addCarButton = fragment.findViewById(R.id.addCarButton);
+        NonScrollListView listPayments = fragment.findViewById(R.id.cars_list);
+
+
+
+        listPayments.setAdapter(adapter);
+
+        addCarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCarCreatorDialog();
+            }
+        });
+
+        //Home button handling
+        FloatingActionButton homeButton = fragment.findViewById(R.id.floating_home_button_user);
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                parentActivity.switchToHomeFragment();
+            }
+        });
         return fragment;
     }
-    private void getUserDetails(
-            EditText IdEdit,
-        EditText nameEdit ,
-        EditText surnameEdit,
-        EditText emailEdit ,
-        EditText phoneEdit,
-        EditText usernameEdit,
-        EditText addressEdit,
-        EditText emailVerified,
-        EditText activeEdit,
-        EditText roleEdit,
-        EditText CIDEdit,
-        EditText userScoreEdit,
-        EditText ageEdit,
-        EditText googleEdit,
-            ImageView imageView
-    ){
-        Call<User> userCall = ApiClient.getUserService().getUserDetails(SharedPreferenceUtil.getEmail(getContext()));
-        userCall.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+    private void showCarCreatorDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-                if(response.isSuccessful()){
-                    User res = response.body();
-                    new Handler().post(() -> {
-                        assert res != null;
-                        DatabaseManager.getInstance().addUser(res);
-                        IdEdit.setText(res.get_id());
-                        nameEdit.setText(res.getName());
-                        surnameEdit.setText(res.getSurname());
-                        emailEdit.setText(res.getEmail());
-                        phoneEdit.setText(res.getPhoneNumber());
-                        usernameEdit.setText(res.getUsername());
-                        emailVerified.setText(res.getEmailVerified() ? "yes":  "no");
-                        activeEdit.setText(res.getActive() ? "yes":  "no");
-                        roleEdit.setText(res.getRole());
-                        CIDEdit.setText(res.getCid());
-                        userScoreEdit.setText(res.getUserScore()!=null ? res.getUserScore().toString() : "0");
-                        addressEdit.setText(res.getAddress());
-                        googleEdit.setText("no");
-                        ageEdit.setText("0");
-                        Picasso.get().load(res.getImage()).fit().centerCrop().into(imageView);
-                    });
-                }else{
-                    Toast.makeText(getContext(), "Fetch Failed",Toast.LENGTH_LONG).show();
-                }
-            }
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.car_details_setter_dialog, null);
+
+        final EditText manufacturerName = view.findViewById(R.id.dialog_manufacturer_setter);
+        final EditText modelName = view.findViewById(R.id.dialog_model_setter);
+        final EditText yearOfManufacturing = view.findViewById(R.id.dialog_year_setter);
+        final EditText colorName = view.findViewById(R.id.dialog_color_setter);
+        final EditText plate = view.findViewById(R.id.dialog_plate_setter);
+        final Spinner fuelType = view.findViewById(R.id.dialog_fuel_setter);
+
+        builder.setCancelable(false)
+                .setMessage("Set the car parameters")
+                .setView(view)
+                .setPositiveButton("Add Car", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                });
+
+        final AlertDialog alert = builder.create();
+        alert.show();
+
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(getContext(), "Throwable: " + t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
+            public void onClick(View v) {
+                String manufacturer = manufacturerName.getText().toString().trim();
+                String model = modelName.getText().toString().trim();
+                String year = yearOfManufacturing.getText().toString().trim();
+                String color = colorName.getText().toString().trim();
+                String fuel = fuelType.getSelectedItem().toString().trim();
+                String _plate = plate.getText().toString().trim();
+
+
+                if ((manufacturer.length() != 0) &&
+                        (model.length() != 0) &&
+                        (year.length() == 4 && (year.startsWith("19") || year.startsWith("20"))) &&
+                        (color.length() != 0)) {
+
+
+                    String Email = SharedPreferenceUtil.getEmail(getContext());
+                    String fullModel = manufacturer + " " + model;
+//                    Car car = new Car(Email,fullModel,year,_plate,fuel,color);
+//                    DatabaseManager.getInstance().getLoggedUser().addCar(car);
+                    AddCarRequest addCarRequest = new AddCarRequest(Email,fullModel,year,_plate,color,fuel);
+                    Call<User> userCall = ApiClient.getUserService().addCar(addCarRequest);
+                    userCall.enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            Toast.makeText(getContext(), "Car added successfully!", Toast.LENGTH_SHORT).show();
+                            alert.dismiss();
+                        }
+
+                        @Override
+                        public void onFailure(Call<User> call, Throwable t) {
+                            Toast.makeText(getContext(), "Add car error!", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
+                } else {
+                    Toast.makeText(getContext(), "Please fill all the necessary fields!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
+            private void getUserDetails(
+                EditText IdEdit, EditText nameEdit , EditText surnameEdit,
+                EditText emailEdit ,EditText phoneEdit,EditText usernameEdit,
+                EditText addressEdit,EditText emailVerified,EditText activeEdit,
+                EditText roleEdit,EditText CIDEdit,EditText userScoreEdit,
+                EditText ageEdit,EditText googleEdit,ImageView imageView
+            ){
+            Call<User> userCall = ApiClient.getUserService().getUserDetails(SharedPreferenceUtil.getEmail(getContext()));
+            userCall.enqueue(new Callback<User>() {
+                @Override
+                public void onResponse(Call<User> call, Response<User> response) {
+
+                    if(response.isSuccessful()){
+                        User res = response.body();
+                        new Handler().post(() -> {
+                            assert res != null;
+                            loggedUser = res;
+                            DatabaseManager.getInstance().addUser(res);
+                            IdEdit.setText(res.get_id());
+                            nameEdit.setText(res.getName());
+                            surnameEdit.setText(res.getSurname());
+                            emailEdit.setText(res.getEmail());
+                            phoneEdit.setText(res.getPhoneNumber());
+                            usernameEdit.setText(res.getUsername());
+                            emailVerified.setText(res.getEmailVerified() ? "yes":  "no");
+                            activeEdit.setText(res.getActive() ? "yes":  "no");
+                            roleEdit.setText(res.getRole());
+                            CIDEdit.setText(res.getCid());
+                            userScoreEdit.setText(res.getUserScore()!=null ? res.getUserScore().toString() : "0");
+                            addressEdit.setText(res.getAddress());
+                            googleEdit.setText("no");
+                            ageEdit.setText("0");
+                            Picasso.get().load(res.getImage()).fit().centerCrop().into(imageView);
+
+                            System.out.println("LOGGED USER" + DatabaseManager.getInstance().getLoggedUser().getCars() + "LOGGED USER");
+                        });
+                    }else{
+                        Toast.makeText(getContext(), "Fetch Failed",Toast.LENGTH_LONG).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
+                    Toast.makeText(getContext(), "Throwable: " + t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+
 }

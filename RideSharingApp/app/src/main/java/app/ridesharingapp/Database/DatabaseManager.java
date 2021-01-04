@@ -2,11 +2,15 @@ package app.ridesharingapp.Database;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Patterns;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import app.ridesharingapp.MainActivity;
 import app.ridesharingapp.Model.Car;
@@ -43,6 +47,7 @@ public class DatabaseManager {
         return true;
     }
     //metoda asta va adauga un user in baza de date
+//<<<<<<< HEAD
     public boolean addUser(String _id,
                            String name,
                            String surname,
@@ -66,6 +71,13 @@ public class DatabaseManager {
                 && !email.equals("") && Patterns.EMAIL_ADDRESS.matcher(email).matches()
                 && !password.equals("")
                 && !phoneNumber.equals("") && phoneNumber.length() == 10
+//=======
+//    public boolean addUser(String name, String email, String password, String phoneNumber, int age) {
+//        if (name.length()!=0
+//                && email.length()!=0 && Patterns.EMAIL_ADDRESS.matcher(email).matches()
+//                && password.length()!=0
+//                && phoneNumber.length() == 10
+//>>>>>>> master
                 && age > 18 && age < 150) {
 
             loggedUser = new User(_id, name, surname, email, phoneNumber, password, username, address, emailVerified, active, role, token, cid, userScore, image, location, method, age, cars);
@@ -92,6 +104,14 @@ public class DatabaseManager {
     //metoda asta va returna cursele prezente in baza de date la momentul actual
     public List<Ride> retrieveRides() {
         return availableRides;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public List<Ride> retreiveRidesForLoggedUser(){
+        return availableRides
+                .stream()
+                .filter((ride) -> ride.getOwner().equals(loggedUser) || ride.getPassengers().contains(loggedUser))
+                .collect(Collectors.toList());
     }
 
     public User getLoggedUser() {
