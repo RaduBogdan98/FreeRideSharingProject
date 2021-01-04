@@ -45,12 +45,13 @@
                         android:layout_toLeftOf="@id/search_start_location_button"
                         android:background="@drawable/rounded_corners_layout"
                         android:padding="5dp"
-                        android:text="Start Location" />
+                        android:text="Start Location"
+                        android:maxLines="1"/>
 
                     <Button
                         android:id="@+id/search_start_location_button"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
@@ -77,12 +78,13 @@
                         android:layout_toLeftOf="@id/search_destination_button"
                         android:background="@drawable/rounded_corners_layout"
                         android:padding="5dp"
-                        android:text="Destination" />
+                        android:text="Destination"
+                        android:maxLines="1"/>
 
                     <Button
                         android:id="@+id/search_destination_button"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
@@ -109,12 +111,13 @@
                         android:layout_toLeftOf="@id/search_date_button"
                         android:background="@drawable/rounded_corners_layout"
                         android:padding="5dp"
-                        android:text="Date" />
+                        android:text="Date"
+                        android:maxLines="1"/>
 
                     <Button
                         android:id="@+id/search_date_button"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
@@ -141,12 +144,13 @@
                         android:layout_toLeftOf="@id/search_time_button"
                         android:background="@drawable/rounded_corners_layout"
                         android:padding="5dp"
-                        android:text="Time" />
+                        android:text="Time"
+                        android:maxLines="1"/>
 
                     <Button
                         android:id="@+id/search_time_button"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="5dp"
@@ -177,7 +181,9 @@
             <ListView
                 android:id="@+id/found_rides_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:dividerHeight="4dp"/>
 
         </RelativeLayout>
 
