@@ -18,7 +18,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_corners_layout"
-                android:minHeight="220dp" />
+                android:minHeight="320dp" />
 
             <TextView
                 android:id="@+id/details_label"
@@ -37,9 +37,29 @@
                 android:layout_below="@+id/details_label">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/id_input_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="ID">
+
+                    <EditText
+                        android:id="@+id/user_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/rounded_corners_layout"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:focusable="false"
+                        android:textSize="20dp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/name_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/id_input_layout"
                     android:hint="Name">
 
                     <EditText
@@ -54,20 +74,20 @@
                         android:textSize="20dp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/age_input_layout"
+                    android:id="@+id/surname_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/name_input_layout"
-                    android:hint="Age">
+                    android:hint="Surname">
 
                     <EditText
-                        android:id="@+id/user_age"
+                        android:id="@+id/user_surname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/rounded_corners_layout"
+                        android:drawablePadding="30dp"
                         android:maxLines="1"
                         android:padding="10dp"
                         android:textSize="20dp" />
@@ -78,7 +98,7 @@
                     android:id="@+id/email_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/age_input_layout"
+                    android:layout_below="@id/surname_input_layout"
                     android:hint="Email">
 
                     <EditText
@@ -109,17 +129,15 @@
                         android:textSize="20dp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
-
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/license_input_layout"
+                    android:id="@+id/username_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/phone_input_layout"
-                    android:hint="License ID">
+                    android:hint="Username">
 
                     <EditText
-                        android:id="@+id/user_licenseID"
+                        android:id="@+id/user_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/rounded_corners_layout"
@@ -128,16 +146,134 @@
                         android:textSize="20dp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/address_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/license_input_layout"
+                    android:layout_below="@id/username_input_layout"
                     android:hint="Address">
 
                     <EditText
                         android:id="@+id/user_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_corners_layout"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:textSize="20dp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/emailVerified_input_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/address_input_layout"
+                    android:hint="EmaiL Verified">
+
+                    <EditText
+                        android:id="@+id/user_emailVerified"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_corners_layout"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:textSize="20dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/active_input_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/emailVerified_input_layout"
+                    android:hint="Active">
+
+                    <EditText
+                        android:id="@+id/user_active"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_corners_layout"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:textSize="20dp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/role_input_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/active_input_layout"
+                    android:hint="Role">
+
+                    <EditText
+                        android:id="@+id/user_role"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_corners_layout"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:textSize="20dp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/CID_input_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/role_input_layout"
+                    android:hint="CID">
+
+                    <EditText
+                        android:id="@+id/user_CID"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_corners_layout"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:textSize="20dp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/userScore_input_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/CID_input_layout"
+                    android:hint="User Score">
+
+                    <EditText
+                        android:id="@+id/user_userScore"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_corners_layout"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:focusable="false"
+                        android:textSize="20dp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/age_input_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/userScore_input_layout"
+                    android:hint="Age">
+
+                    <EditText
+                        android:id="@+id/user_age"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_corners_layout"
+                        android:maxLines="1"
+                        android:padding="10dp"
+                        android:textSize="20dp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/google_input_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/age_input_layout"
+                    android:hint="Google">
+
+                    <EditText
+                        android:id="@+id/user_google"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/rounded_corners_layout"
