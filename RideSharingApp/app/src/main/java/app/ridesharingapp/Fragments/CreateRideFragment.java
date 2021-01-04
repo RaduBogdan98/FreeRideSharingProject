@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import app.ridesharingapp.Database.DatabaseManager;
@@ -36,6 +38,7 @@ import static android.app.Activity.RESULT_OK;
 
 
 public class CreateRideFragment extends Fragment {
+    private DatabaseManager databaseManager = DatabaseManager.getInstance();
     private int START_ADDRESS_REQUEST = 10;
     private int DESTINATION_ADDRESS_REQUEST = 20;
     private MainActivity parentActivity;
@@ -197,7 +200,13 @@ public class CreateRideFragment extends Fragment {
                 .setView(view)
                 .setPositiveButton("Create", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        DatabaseManager.getInstance().addRide(new Ride(DatabaseManager.getInstance().getLoggedUser(), startAddress, destinationAddress, selectedDate, selectedTime, Integer.parseInt(numberOfPassengers.getText().toString())));
+                        databaseManager.addRide(
+                                new Ride(
+                                        databaseManager.getLoggedUser(),
+                                        destinationAddress,
+                                        selectedDate,
+                                        new Date(1,4,2021)
+                                        ));
                         parentActivity.switchToHomeFragment();
                     }
                 });

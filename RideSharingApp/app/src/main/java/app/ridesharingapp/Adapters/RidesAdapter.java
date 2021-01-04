@@ -52,12 +52,12 @@ public class RidesAdapter extends ArrayAdapter<Ride> {
 
         final Ride ride = rides.get(position);
 
-        itemHolder.tStartLocation.setText(ride.getStartLocation().getLocationName());
+        itemHolder.tStartLocation.setText(ride.getPickupPoint().getLocationName());
         itemHolder.tDestination.setText(ride.getDestination().getLocationName());
-        itemHolder.tDate.setText(ride.getDate().toString());
-        itemHolder.tTime.setText(ride.getTime().toString());
-        itemHolder.tPlaces.setText(ride.getNumberOfAvailablePlaces()+"");
-        itemHolder.tDriverName.setText(ride.getOwner().getName());
+        itemHolder.tDate.setText(ride.getDepartureTime().toString());
+        itemHolder.tTime.setText(ride.getArrivalTime().toString());
+        itemHolder.tPlaces.setText((4-ride.getNumberOfPassengers())+"");
+        itemHolder.tDriverName.setText(ride.getDriver().getName());
 
         return view;
     }

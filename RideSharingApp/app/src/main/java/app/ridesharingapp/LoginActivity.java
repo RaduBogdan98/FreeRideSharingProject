@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 
 import app.ridesharingapp.Database.DatabaseManager;
 import app.ridesharingapp.Model.Requests.LoginRequest;
-import app.ridesharingapp.Model.Responses.LoginResponse;
 import app.ridesharingapp.Model.User;
 import app.ridesharingapp.Services.ApiClient;
 import app.ridesharingapp.Utils.SharedPreferenceUtil;
@@ -24,12 +22,15 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private DatabaseManager databaseManager = DatabaseManager.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         SharedPreferenceUtil.saveEmail(null,getApplicationContext());
         SharedPreferenceUtil.savePassword(null,getApplicationContext());
+
         if(SharedPreferenceUtil.getEmail(this) !=null){
             Intent intent = new Intent(LoginActivity.this,MainActivity.class);
             startActivity(intent);
@@ -51,7 +52,6 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//<<<<<<< HEAD
                 login(emailText.getText().toString(),passwordText.getText().toString());
             }
         });
@@ -61,10 +61,10 @@ public class LoginActivity extends AppCompatActivity {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setEmail(email);
         loginRequest.setPassword(password);
-        Call<LoginResponse> loginResponseCall = ApiClient.getUserService().userLogin(loginRequest);
-        loginResponseCall.enqueue(new Callback<LoginResponse>() {
+        Call<User> loginResponseCall = ApiClient.getUserService().userLogin(loginRequest);
+        loginResponseCall.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
                 if(response.isSuccessful()){
                     Toast.makeText(LoginActivity.this, "Login Successful",Toast.LENGTH_LONG).show();
 
@@ -73,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                         public void run() {
                             SharedPreferenceUtil.saveEmail(email,getApplicationContext());
                             SharedPreferenceUtil.savePassword(password,getApplicationContext());
+                            databaseManager.addUser(response.body());
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             intent.putExtra("EMAIL",email);
                             startActivity(intent);
@@ -81,19 +82,11 @@ public class LoginActivity extends AppCompatActivity {
                     },500);
                 }else{
                     Toast.makeText(LoginActivity.this, "Login Failed",Toast.LENGTH_LONG).show();
-//=======
-//                if(DatabaseManager.getInstance().findUser(emailText.getText().toString().trim(), passwordText.getText().toString().trim()) == true){
-//                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//                    startActivity(intent);
-//                }
-//                else{
-//                    Toast.makeText(getApplicationContext(), "Log In Failed!", Toast.LENGTH_SHORT).show();
-//>>>>>>> master
                 }
             }
 
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 Toast.makeText(LoginActivity.this, "Throwable: " + t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
             }
         });

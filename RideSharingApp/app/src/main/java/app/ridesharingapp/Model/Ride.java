@@ -7,57 +7,117 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ride {
-    private Location startLocation;
+    private User driver;
+    private List<User> clients;
+    private Car car;
+    private Location pickupPoint;
     private Location destination;
-    private Date date;
-    private Time time;
-    private int numberOfPassengers;
-    private User owner;
-    private List<User> passengers;
+    private Date departureTime;
+    private Date arrivalTime;
+    private String status;
+    private String distance;
+    private String avgSpeed;
+    private Integer numberOfPassengers;
 
-    public Ride(User owner, Location startLocation, Location destination, Date date, Time time, int numberOfPassengers) {
-        this.owner = owner;
-        this.startLocation = startLocation;
+    public Ride(User driver, Location destination, Date departureTime, Date arrivalTime) {
+        this.driver = driver;
+        this.clients = new ArrayList<>();
+        this.car = driver.getCars().get(0);
+        this.pickupPoint = driver.getLocation();
         this.destination = destination;
-        this.date = date;
-        this.time = time;
-        this.numberOfPassengers = numberOfPassengers;
-        passengers = new ArrayList<>(numberOfPassengers);
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.status = "pending";
+        this.distance = "10km";
+        this.avgSpeed = "50 km/h";
+        this.numberOfPassengers = this.clients.size();
     }
 
-    public Location getStartLocation() {
-        return startLocation;
+    public User getDriver() {
+        return driver;
+    }
+
+    public void setDriver(User driver) {
+        this.driver = driver;
+    }
+
+    public List<User> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<User> clients) {
+        this.clients = clients;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    public Location getPickupPoint() {
+        return pickupPoint;
+    }
+
+    public void setPickupPoint(Location pickupPoint) {
+        this.pickupPoint = pickupPoint;
     }
 
     public Location getDestination() {
         return destination;
     }
 
-    public Date getDate() {
-        return date;
+    public void setDestination(Location destination) {
+        this.destination = destination;
     }
 
-    public Time getTime() {
-        return time;
+    public Date getDepartureTime() {
+        return departureTime;
     }
 
-    public void occupyPlace(Context context, User user) {
-        if (this.passengers.size() < numberOfPassengers) {
-            this.passengers.add(user);
-        } else {
-            Toast.makeText(context, "Ride is full!", Toast.LENGTH_LONG);
-        }
+    public void setDepartureTime(Date departureTime) {
+        this.departureTime = departureTime;
     }
 
-    public int getNumberOfAvailablePlaces() {
-        return numberOfPassengers - this.passengers.size();
+    public Date getArrivalTime() {
+        return arrivalTime;
     }
 
-    public User getOwner() {
-        return owner;
+    public void setArrivalTime(Date arrivalTime) {
+        this.arrivalTime = arrivalTime;
     }
 
-    public List<User> getPassengers() {
-        return passengers;
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public String getAvgSpeed() {
+        return avgSpeed;
+    }
+
+    public void setAvgSpeed(String avgSpeed) {
+        this.avgSpeed = avgSpeed;
+    }
+
+    public Integer getNumberOfPassengers() {
+        return numberOfPassengers;
+    }
+
+    public void setNumberOfPassengers(Integer numberOfPassengers) {
+        this.numberOfPassengers = numberOfPassengers;
     }
 }

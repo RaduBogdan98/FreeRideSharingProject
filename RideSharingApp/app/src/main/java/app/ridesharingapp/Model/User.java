@@ -24,7 +24,7 @@ public class User {
     // Change this to specific object type
 //    private String google;
     private int age;
-    private List<Car> cars;
+    private List<Car> car;
 
     public User(){}
     public User(String _id, String name, String surname, String email, String phoneNumber, String password, String username, String address, Boolean emailVerified, Boolean active, String role, String token, String cid, Number userScore, String image, Location location, String method, int age, List<Car> cars) {
@@ -46,7 +46,7 @@ public class User {
         this.location = location;
         this.method = method;
         this.age = age;
-        this.cars = cars;
+        this.car = cars;
     }
 
     public String get_id() {
@@ -194,18 +194,14 @@ public class User {
     }
 
     public List<Car> getCars() {
-        return cars;
+        return car;
     }
 
     public void setCars(List<Car> cars) {
-        this.cars = cars;
+        this.car = cars;
     }
 
     public void addCar(Car car){
-        this.cars.add(car);
+        this.car.add(car);
     }
-
-//    public List<Car> getCars(){
-//        return cars;
-//    }
 }

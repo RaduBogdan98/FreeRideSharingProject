@@ -1,23 +1,14 @@
 package app.ridesharingapp.Database;
-
-import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.util.Patterns;
-import android.widget.Toast;
-
 import androidx.annotation.RequiresApi;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import app.ridesharingapp.MainActivity;
 import app.ridesharingapp.Model.Car;
 import app.ridesharingapp.Model.Location;
 import app.ridesharingapp.Model.Ride;
 import app.ridesharingapp.Model.User;
-import app.ridesharingapp.SignUpActivity;
 
 public class DatabaseManager {
     private static DatabaseManager instance;
@@ -110,7 +101,7 @@ public class DatabaseManager {
     public List<Ride> retreiveRidesForLoggedUser(){
         return availableRides
                 .stream()
-                .filter((ride) -> ride.getOwner().equals(loggedUser) || ride.getPassengers().contains(loggedUser))
+                .filter((ride) -> ride.getDriver().equals(loggedUser) || ride.getClients().contains(loggedUser))
                 .collect(Collectors.toList());
     }
 

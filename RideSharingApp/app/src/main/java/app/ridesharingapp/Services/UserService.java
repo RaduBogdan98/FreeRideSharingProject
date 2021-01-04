@@ -2,6 +2,7 @@ package app.ridesharingapp.Services;
 
 import app.ridesharingapp.Model.Requests.AddCarRequest;
 import app.ridesharingapp.Model.Requests.LoginRequest;
+import app.ridesharingapp.Model.Requests.RegisterRequest;
 import app.ridesharingapp.Model.Responses.LoginResponse;
 import app.ridesharingapp.Model.User;
 import okhttp3.MultipartBody;
@@ -18,7 +19,10 @@ import retrofit2.http.Path;
 public interface UserService {
 
     @POST("api/users/login/")
-    Call<LoginResponse> userLogin(@Body LoginRequest loginRequest);
+    Call<User> userLogin(@Body LoginRequest loginRequest);
+
+    @POST("api/users/register")
+    Call<User> userRegister(@Body RegisterRequest registerRequest);
 
     @GET("api/users/user/{userEmail}")
     Call<User> getUserDetails(@Path("userEmail") String userEmail);

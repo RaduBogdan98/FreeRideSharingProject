@@ -40,6 +40,7 @@ public class CarsAdapter extends ArrayAdapter<Car> {
             itemHolder.carManufacturingYear = (TextView) view.findViewById(R.id.car_year_TV);
             itemHolder.carFuelType = (TextView) view.findViewById(R.id.car_fuel_type_TV);
             itemHolder.carColor = (TextView) view.findViewById(R.id.car_color_TV);
+            itemHolder.plate = (TextView) view.findViewById(R.id.plate_TV);
 
             view.setTag(itemHolder);
 
@@ -52,8 +53,9 @@ public class CarsAdapter extends ArrayAdapter<Car> {
         itemHolder.carManufacturerName.setText(car.getOwner());
         itemHolder.carModel.setText(car.getModel());
         itemHolder.carManufacturingYear.setText(car.getYear());
-        itemHolder.carFuelType.setText(car.getPlate());
+        itemHolder.carFuelType.setText(car.getFuel());
         itemHolder.carColor.setText(car.getFuel());
+        itemHolder.plate.setText(car.getPlate());
 
         return view;
     }
@@ -64,5 +66,6 @@ public class CarsAdapter extends ArrayAdapter<Car> {
         TextView carManufacturingYear;
         TextView carFuelType;
         TextView carColor;
+        TextView plate;
     }
 }

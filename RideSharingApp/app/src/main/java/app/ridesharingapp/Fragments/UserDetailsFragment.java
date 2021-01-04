@@ -22,6 +22,7 @@ import app.ridesharingapp.Adapters.CarsAdapter;
 import app.ridesharingapp.Database.DatabaseManager;
 import app.ridesharingapp.LayoutElements.NonScrollListView;
 import app.ridesharingapp.MainActivity;
+import app.ridesharingapp.Model.Car;
 import app.ridesharingapp.Model.Requests.AddCarRequest;
 import app.ridesharingapp.Model.User;
 import app.ridesharingapp.R;
@@ -33,11 +34,13 @@ import retrofit2.Response;
 
 public class UserDetailsFragment extends Fragment {
     private MainActivity parentActivity;
-    private CarsAdapter adapter;
 
+    private DatabaseManager databaseManager = DatabaseManager.getInstance();
     private User loggedUser;
+
     public UserDetailsFragment(MainActivity parentActivity) {
         this.parentActivity = parentActivity;
+        this.loggedUser = databaseManager.getLoggedUser();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,8 +65,22 @@ public class UserDetailsFragment extends Fragment {
         EditText ageEdit = fragment.findViewById(R.id.user_age);
         EditText googleEdit = fragment.findViewById(R.id.user_google);
 
-
-        getUserDetails(IdEdit,nameEdit,surnameEdit,emailEdit,phoneEdit,usernameEdit,addressEdit,emailVerified,activeEdit,roleEdit,CIDEdit,userScoreEdit,ageEdit,googleEdit,imageView);
+        IdEdit.setText(loggedUser.get_id());
+        nameEdit.setText(loggedUser.getName());
+        surnameEdit.setText(loggedUser.getSurname());
+        emailEdit.setText(loggedUser.getEmail());
+        phoneEdit.setText(loggedUser.getPhoneNumber());
+        usernameEdit.setText(loggedUser.getUsername());
+        emailVerified.setText(loggedUser.getEmailVerified() ? "yes":  "no");
+        activeEdit.setText(loggedUser.getActive() ? "yes":  "no");
+        roleEdit.setText(loggedUser.getRole());
+        CIDEdit.setText(loggedUser.getCid());
+        userScoreEdit.setText(loggedUser.getUserScore()!=null ? loggedUser.getUserScore().toString() : "0");
+        addressEdit.setText(loggedUser.getAddress());
+        googleEdit.setText("no");
+        ageEdit.setText("0");
+        Picasso.get().load(loggedUser.getImage()).fit().centerCrop().into(imageView);
+//        getUserDetails(IdEdit,nameEdit,surnameEdit,emailEdit,phoneEdit,usernameEdit,addressEdit,emailVerified,activeEdit,roleEdit,CIDEdit,userScoreEdit,ageEdit,googleEdit,imageView);
 
         nameEdit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -159,8 +176,7 @@ public class UserDetailsFragment extends Fragment {
         Button addCarButton = fragment.findViewById(R.id.addCarButton);
         NonScrollListView listPayments = fragment.findViewById(R.id.cars_list);
 
-
-
+        final CarsAdapter adapter = new CarsAdapter(getContext(), R.layout.car_details_card, databaseManager.getLoggedUser().getCars());
         listPayments.setAdapter(adapter);
 
         addCarButton.setOnClickListener(new View.OnClickListener() {
@@ -223,8 +239,10 @@ public class UserDetailsFragment extends Fragment {
 
                     String Email = SharedPreferenceUtil.getEmail(getContext());
                     String fullModel = manufacturer + " " + model;
-//                    Car car = new Car(Email,fullModel,year,_plate,fuel,color);
-//                    DatabaseManager.getInstance().getLoggedUser().addCar(car);
+                    Car car = new Car(Email,fullModel,year,_plate,fuel,color);
+                    databaseManager.getLoggedUser().addCar(car);
+
+
                     AddCarRequest addCarRequest = new AddCarRequest(Email,fullModel,year,_plate,color,fuel);
                     Call<User> userCall = ApiClient.getUserService().addCar(addCarRequest);
                     userCall.enqueue(new Callback<User>() {
@@ -246,52 +264,4 @@ public class UserDetailsFragment extends Fragment {
             }
         });
     }
-            private void getUserDetails(
-                EditText IdEdit, EditText nameEdit , EditText surnameEdit,
-                EditText emailEdit ,EditText phoneEdit,EditText usernameEdit,
-                EditText addressEdit,EditText emailVerified,EditText activeEdit,
-                EditText roleEdit,EditText CIDEdit,EditText userScoreEdit,
-                EditText ageEdit,EditText googleEdit,ImageView imageView
-            ){
-            Call<User> userCall = ApiClient.getUserService().getUserDetails(SharedPreferenceUtil.getEmail(getContext()));
-            userCall.enqueue(new Callback<User>() {
-                @Override
-                public void onResponse(Call<User> call, Response<User> response) {
-
-                    if(response.isSuccessful()){
-                        User res = response.body();
-                        new Handler().post(() -> {
-                            assert res != null;
-                            loggedUser = res;
-                            DatabaseManager.getInstance().addUser(res);
-                            IdEdit.setText(res.get_id());
-                            nameEdit.setText(res.getName());
-                            surnameEdit.setText(res.getSurname());
-                            emailEdit.setText(res.getEmail());
-                            phoneEdit.setText(res.getPhoneNumber());
-                            usernameEdit.setText(res.getUsername());
-                            emailVerified.setText(res.getEmailVerified() ? "yes":  "no");
-                            activeEdit.setText(res.getActive() ? "yes":  "no");
-                            roleEdit.setText(res.getRole());
-                            CIDEdit.setText(res.getCid());
-                            userScoreEdit.setText(res.getUserScore()!=null ? res.getUserScore().toString() : "0");
-                            addressEdit.setText(res.getAddress());
-                            googleEdit.setText("no");
-                            ageEdit.setText("0");
-                            Picasso.get().load(res.getImage()).fit().centerCrop().into(imageView);
-
-                            System.out.println("LOGGED USER" + DatabaseManager.getInstance().getLoggedUser().getCars() + "LOGGED USER");
-                        });
-                    }else{
-                        Toast.makeText(getContext(), "Fetch Failed",Toast.LENGTH_LONG).show();
-                    }
-                }
-                @Override
-                public void onFailure(Call<User> call, Throwable t) {
-                    Toast.makeText(getContext(), "Throwable: " + t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-
-
 }

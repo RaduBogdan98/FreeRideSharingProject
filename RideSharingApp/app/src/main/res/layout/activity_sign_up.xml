@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="40sp"
+                android:layout_marginBottom="30sp"
                 android:background="@drawable/rounded_corners_layout"
                 android:text="Register" />
 
@@ -109,14 +109,14 @@
                 android:textSize="21sp"/>
 
             <EditText
-                android:id="@+id/phoneNumberEdit"
+                android:id="@+id/surnameEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/edit_text_border"
-                android:hint="phone number"
-                android:inputType="phone"
+                android:hint="surname"
+                android:inputType="textPersonName"
                 android:padding="5sp"
                 android:textSize="21sp"/>
 
@@ -131,6 +131,26 @@
                 android:inputType="number"
                 android:padding="5sp"
                 android:textSize="21sp" />
+            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:textSize="21sp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="2dp">
+
+                <RadioButton android:id="@+id/radio_driver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Driver"
+                    android:onClick="onRadioButtonClicked"/>
+                <RadioButton android:id="@+id/radio_client"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Client"
+                    android:onClick="onRadioButtonClicked"/>
+
+            </RadioGroup>
 
         </LinearLayout>
 
