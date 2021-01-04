@@ -1,6 +1,5 @@
 package app.ridesharingapp.Fragments;
 import android.os.Bundle;
-import android.os.Handler;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.text.Editable;
@@ -14,10 +13,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
-
 import com.squareup.picasso.Picasso;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import app.ridesharingapp.Adapters.CarsAdapter;
 import app.ridesharingapp.Database.DatabaseManager;
 import app.ridesharingapp.LayoutElements.NonScrollListView;
@@ -94,6 +94,39 @@ public class UserDetailsFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+            }
+        });
+
+        surnameEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loggedUser.setSurname(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        usernameEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                loggedUser.setUsername(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -186,6 +219,14 @@ public class UserDetailsFragment extends Fragment {
             }
         });
 
+        Button updateProfileButton = fragment.findViewById(R.id.updateUser);
+        updateProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateProfile();
+            }
+        });
+
         //Home button handling
         FloatingActionButton homeButton = fragment.findViewById(R.id.floating_home_button_user);
         homeButton.setOnClickListener(new View.OnClickListener() {
@@ -195,6 +236,22 @@ public class UserDetailsFragment extends Fragment {
             }
         });
         return fragment;
+    }
+    private void updateProfile(){
+        Call<User> updateCall = ApiClient.getUserService().updateUser(SharedPreferenceUtil.getEmail(getContext()),databaseManager.getLoggedUser());
+        updateCall.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                Toast.makeText(getContext(), "Update Success!", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(getContext(), "Update error!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
     private void showCarCreatorDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());

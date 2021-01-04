@@ -1,8 +1,11 @@
 package app.ridesharingapp.Services;
 
+import java.util.Map;
+
 import app.ridesharingapp.Model.Requests.AddCarRequest;
 import app.ridesharingapp.Model.Requests.LoginRequest;
 import app.ridesharingapp.Model.Requests.RegisterRequest;
+import app.ridesharingapp.Model.Requests.UserUpdateRequest;
 import app.ridesharingapp.Model.Responses.LoginResponse;
 import app.ridesharingapp.Model.User;
 import okhttp3.MultipartBody;
@@ -12,6 +15,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
@@ -30,6 +34,9 @@ public interface UserService {
 
     @POST("api/users/user/addCar")
     Call<User> addCar(@Body AddCarRequest addCarRequest);
+
+    @PATCH("api/users/user/{userEmail}")
+    Call<User> updateUser(@Path("userEmail") String userEmail, @Body User update);
 
 
     @Multipart

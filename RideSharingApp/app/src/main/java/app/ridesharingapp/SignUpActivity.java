@@ -59,7 +59,7 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
                         if(response.isSuccessful()){
-                            Toast.makeText(SignUpActivity.this, "Login Successful",Toast.LENGTH_LONG).show();
+                            Toast.makeText(SignUpActivity.this, "Register Successful",Toast.LENGTH_LONG).show();
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
@@ -69,7 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 }
                             },300);
                         }else{
-                            Toast.makeText(SignUpActivity.this, "Login Failed",Toast.LENGTH_LONG).show();
+                            Toast.makeText(SignUpActivity.this, "Register Failed",Toast.LENGTH_LONG).show();
                         }
                     }
                     @Override
