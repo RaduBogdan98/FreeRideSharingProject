@@ -36,13 +36,13 @@ public class SignUpActivity extends AppCompatActivity {
                 String phoneNumber = phoneNumberEdit.getText().toString().trim();
                 int age = Integer.parseInt(ageEdit.getText().toString().trim());
 
-                if(DatabaseManager.getInstance().addUser(name, email, password, phoneNumber, age)){
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Sign Up Failed! Check credentials!", Toast.LENGTH_SHORT).show();
-                }
+//                if(DatabaseManager.getInstance().addUser(name, email, password, phoneNumber, age)){
+//                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//                    startActivity(intent);
+//                }
+//                else{
+//                    Toast.makeText(getApplicationContext(), "Sign Up Failed! Check credentials!", Toast.LENGTH_SHORT).show();
+//                }
             }
         });
     }

@@ -49,11 +49,11 @@ public class CarsAdapter extends ArrayAdapter<Car> {
 
         final Car car = cars.get(position);
 
-        itemHolder.carManufacturerName.setText(car.getCarManufacturerName());
-        itemHolder.carModel.setText(car.getCarModel());
-        itemHolder.carManufacturingYear.setText(car.getCarManufacturingYear());
-        itemHolder.carFuelType.setText(car.getCarFuelType());
-        itemHolder.carColor.setText(car.getCarColor());
+        itemHolder.carManufacturerName.setText(car.getOwner());
+        itemHolder.carModel.setText(car.getModel());
+        itemHolder.carManufacturingYear.setText(car.getYear());
+        itemHolder.carFuelType.setText(car.getPlate());
+        itemHolder.carColor.setText(car.getFuel());
 
         return view;
     }

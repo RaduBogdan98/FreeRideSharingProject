@@ -7,17 +7,26 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import app.ridesharingapp.Database.DatabaseManager;
 import app.ridesharingapp.Fragments.CreateRideFragment;
 import app.ridesharingapp.Fragments.HomeFragment;
 import app.ridesharingapp.Fragments.SearchRideFragment;
 import app.ridesharingapp.Fragments.UserDetailsFragment;
+import app.ridesharingapp.Model.User;
+import app.ridesharingapp.Services.ApiClient;
+import app.ridesharingapp.Utils.SharedPreferenceUtil;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     private Menu navbarMenu;
