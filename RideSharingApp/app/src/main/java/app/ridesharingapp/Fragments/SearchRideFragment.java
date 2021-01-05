@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import app.ridesharingapp.Adapters.RidesAdapter;
 import app.ridesharingapp.Database.DatabaseManager;
@@ -128,7 +129,29 @@ public class SearchRideFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 foundRides.clear();
-                foundRides.addAll(DatabaseManager.getInstance().retrieveRides());
+                foundRides.addAll(
+                        DatabaseManager
+                                .getInstance()
+                                .retrieveRides()
+                                .stream()
+                                .filter((ride) ->
+                                        ride.getDepartureDate().equals(date) &&
+
+                                                ride.getDepartureTime().greaterOrEqual(time) &&
+
+                                                calculateDistanceInKilometers(ride.getPickupPoint().getLatLng().latitude,
+                                                        ride.getPickupPoint().getLatLng().longitude,
+                                                        startLocation.getLatLng().latitude,
+                                                        startLocation.getLatLng().longitude) < 1 &&
+
+                                                calculateDistanceInKilometers(ride.getDestination().getLatLng().latitude,
+                                                        ride.getDestination().getLatLng().longitude,
+                                                        destination.getLatLng().latitude,
+                                                        destination.getLatLng().longitude) < 1
+                                )
+                                .collect(Collectors.toList())
+                );
+
                 adapter.notifyDataSetChanged();
             }
         });
@@ -157,5 +180,22 @@ public class SearchRideFragment extends Fragment {
     private void openMapsActivity(int requestCode) {
         Intent intent = new Intent(getActivity(), MapsActivity.class);
         startActivityForResult(intent, requestCode);
+    }
+
+    public final static double AVERAGE_RADIUS_OF_EARTH_KM = 6371;
+
+    public double calculateDistanceInKilometers(double lat1, double lng1,
+                                                double lat2, double lng2) {
+
+        double latDistance = Math.toRadians(lat1 - lat2);
+        double lngDistance = Math.toRadians(lng1 - lng2);
+
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lngDistance / 2) * Math.sin(lngDistance / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return AVERAGE_RADIUS_OF_EARTH_KM * c;
     }
 }

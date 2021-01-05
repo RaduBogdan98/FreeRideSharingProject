@@ -24,7 +24,6 @@ import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private String role;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,58 +45,8 @@ public class SignUpActivity extends AppCompatActivity {
                 String surname = surnameEdit.getText().toString().trim();
                 int age = Integer.parseInt(ageEdit.getText().toString().trim());
 
-                RegisterRequest registerRequest = new RegisterRequest();
-                registerRequest.setEmail(email);
-                registerRequest.setName(name);
-                registerRequest.setPassword(password);
-                registerRequest.setSurname(surname);
-                registerRequest.setAge(age);
-                registerRequest.setRole(role);
-
-                Call<User> loginResponseCall = ApiClient.getUserService().userRegister(registerRequest);
-                loginResponseCall.enqueue(new Callback<User>() {
-                    @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        if(response.isSuccessful()){
-                            Toast.makeText(SignUpActivity.this, "Register Successful",Toast.LENGTH_LONG).show();
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            },300);
-                        }else{
-                            Toast.makeText(SignUpActivity.this, "Register Failed",Toast.LENGTH_LONG).show();
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-                        Toast.makeText(SignUpActivity.this, "Throwable: " + t.getLocalizedMessage(),Toast.LENGTH_LONG).show();
-                    }
-                });
-
+                DatabaseManager.getInstance().signUpUser(getApplicationContext(), email, password, name, surname, age);
             }
         });
-    }
-
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.radio_driver:
-                if (checked)
-                    role = "driver";
-                System.out.println(role);
-                    break;
-            case R.id.radio_client:
-                if (checked)
-                    role = "client";
-                System.out.println(role);
-                    break;
-            default:role = "client";
-        }
     }
 }

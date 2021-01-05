@@ -47,40 +47,23 @@ public class UserDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View fragment = inflater.inflate(R.layout.fragment_user_details, container, false);
-        ImageView imageView = (ImageView) fragment.findViewById(R.id.user_image);
-        EditText IdEdit = fragment.findViewById(R.id.user_id);
 
         //User details area handling
         EditText nameEdit = fragment.findViewById(R.id.user_name);
         EditText surnameEdit = fragment.findViewById(R.id.user_surname);
         EditText emailEdit = fragment.findViewById(R.id.user_email);
         EditText phoneEdit = fragment.findViewById(R.id.user_phone);
-        EditText usernameEdit = fragment.findViewById(R.id.user_username);
         EditText addressEdit = fragment.findViewById(R.id.user_address);
-        EditText emailVerified = fragment.findViewById(R.id.user_emailVerified);
-        EditText activeEdit = fragment.findViewById(R.id.user_active);
-        EditText roleEdit = fragment.findViewById(R.id.user_role);
         EditText CIDEdit = fragment.findViewById(R.id.user_CID);
-        EditText userScoreEdit = fragment.findViewById(R.id.user_userScore);
         EditText ageEdit = fragment.findViewById(R.id.user_age);
-        EditText googleEdit = fragment.findViewById(R.id.user_google);
 
-        IdEdit.setText(loggedUser.get_id());
         nameEdit.setText(loggedUser.getName());
         surnameEdit.setText(loggedUser.getSurname());
         emailEdit.setText(loggedUser.getEmail());
         phoneEdit.setText(loggedUser.getPhoneNumber());
-        usernameEdit.setText(loggedUser.getUsername());
-        emailVerified.setText(loggedUser.getEmailVerified() ? "yes":  "no");
-        activeEdit.setText(loggedUser.getActive() ? "yes":  "no");
-        roleEdit.setText(loggedUser.getRole());
         CIDEdit.setText(loggedUser.getCid());
-        userScoreEdit.setText(loggedUser.getUserScore()!=null ? loggedUser.getUserScore().toString() : "0");
         addressEdit.setText(loggedUser.getAddress());
-        googleEdit.setText("no");
         ageEdit.setText("0");
-        Picasso.get().load(loggedUser.getImage()).fit().centerCrop().into(imageView);
-//        getUserDetails(IdEdit,nameEdit,surnameEdit,emailEdit,phoneEdit,usernameEdit,addressEdit,emailVerified,activeEdit,roleEdit,CIDEdit,userScoreEdit,ageEdit,googleEdit,imageView);
 
         nameEdit.addTextChangedListener(new TextWatcher() {
             @Override
@@ -106,22 +89,6 @@ public class UserDetailsFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 loggedUser.setSurname(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        usernameEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                loggedUser.setUsername(s.toString());
             }
 
             @Override
@@ -243,13 +210,11 @@ public class UserDetailsFragment extends Fragment {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 Toast.makeText(getContext(), "Update Success!", Toast.LENGTH_SHORT).show();
-
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Toast.makeText(getContext(), "Update error!", Toast.LENGTH_SHORT).show();
-
             }
         });
     }

@@ -21,4 +21,8 @@ public class Time {
     public String toString() {
         return hour + ":" + minute;
     }
+
+    public boolean greaterOrEqual(Time time) {
+        return (time.getHour() > this.hour) || (time.getHour() == this.hour && time.getMinute() >= this.minute);
+    }
 }

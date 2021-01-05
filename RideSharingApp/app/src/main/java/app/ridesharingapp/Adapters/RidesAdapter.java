@@ -42,7 +42,6 @@ public class RidesAdapter extends ArrayAdapter<Ride> {
             itemHolder.tTime = (TextView) view.findViewById(R.id.card_time);
             itemHolder.tPlaces = (TextView) view.findViewById(R.id.card_places);
             itemHolder.tDriverName = (TextView) view.findViewById(R.id.card_driver_name);
-            itemHolder.tDriverIco = (ImageView) view.findViewById(R.id.card_driver_ico);
 
             view.setTag(itemHolder);
 
@@ -54,8 +53,8 @@ public class RidesAdapter extends ArrayAdapter<Ride> {
 
         itemHolder.tStartLocation.setText(ride.getPickupPoint().getLocationName());
         itemHolder.tDestination.setText(ride.getDestination().getLocationName());
-        itemHolder.tDate.setText(ride.getDepartureTime().toString());
-        itemHolder.tTime.setText(ride.getArrivalTime().toString());
+        itemHolder.tDate.setText(ride.getDepartureDate().toString());
+        itemHolder.tTime.setText(ride.getDepartureTime().toString());
         itemHolder.tPlaces.setText((4-ride.getNumberOfPassengers())+"");
         itemHolder.tDriverName.setText(ride.getDriver().getName());
 
@@ -69,7 +68,6 @@ public class RidesAdapter extends ArrayAdapter<Ride> {
         TextView tTime;
         TextView tPlaces;
         TextView tDriverName;
-        ImageView tDriverIco;
     }
 
     public List<Ride> getRides() {
