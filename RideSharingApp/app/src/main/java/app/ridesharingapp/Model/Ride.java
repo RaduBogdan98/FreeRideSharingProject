@@ -86,7 +86,15 @@ public class Ride {
         return availablePlaces - clients.size();
     }
 
-    public void removeClient(User user){
+    public void removeClient(User user) {
         clients.remove(user);
+
+        //adauga logica aici
+    }
+
+    public void addClient(User user) {
+        clients.add(user);
+
+        //adauga logica aici
     }
 }

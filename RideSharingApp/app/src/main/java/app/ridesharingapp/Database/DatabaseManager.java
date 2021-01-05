@@ -127,6 +127,8 @@ public class DatabaseManager {
 
     public void removeRide(Ride ride){
         availableRides.remove(ride);
+
+        //adauga logica de eliminare aici
     }
 
     public List<Ride> retrieveRides() {

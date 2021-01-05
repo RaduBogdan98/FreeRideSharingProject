@@ -212,7 +212,7 @@ public class SearchRideFragment extends Fragment {
                                         destination.getLatLng().latitude,
                                         destination.getLatLng().longitude) < 3
 
-                                //&& !ride.getDriver().equals(DatabaseManager.getInstance().getLoggedUser())
+                                && !ride.getDriver().equals(DatabaseManager.getInstance().getLoggedUser())
 
                                 && !ride.getClients().contains(DatabaseManager.getInstance().getLoggedUser())
                 )
@@ -279,7 +279,7 @@ public class SearchRideFragment extends Fragment {
                 .setView(view)
                 .setPositiveButton("Join Ride", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        ride.getClients().add(DatabaseManager.getInstance().getLoggedUser());
+                        ride.addClient(DatabaseManager.getInstance().getLoggedUser());
                         Intent intent = new Intent(getContext(), MainActivity.class);
                         startActivity(intent);
                     }
