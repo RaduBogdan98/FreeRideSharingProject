@@ -1,14 +1,32 @@
 package app.ridesharingapp.Database;
+
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
 import android.util.Patterns;
+import android.widget.Toast;
+
 import androidx.annotation.RequiresApi;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import app.ridesharingapp.LoginActivity;
+import app.ridesharingapp.MainActivity;
 import app.ridesharingapp.Model.Car;
 import app.ridesharingapp.Model.Location;
+import app.ridesharingapp.Model.Requests.LoginRequest;
+import app.ridesharingapp.Model.Requests.RegisterRequest;
 import app.ridesharingapp.Model.Ride;
 import app.ridesharingapp.Model.User;
+import app.ridesharingapp.Services.ApiClient;
+import app.ridesharingapp.SignUpActivity;
+import app.ridesharingapp.Utils.SharedPreferenceUtil;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DatabaseManager {
     private static DatabaseManager instance;
@@ -16,10 +34,8 @@ public class DatabaseManager {
     private List<Ride> availableRides;
     private User loggedUser;
 
-    //Clasa asta va comunica cu baza de date si va adauga si citi informatii din baza de date
     private DatabaseManager() {
         availableRides = new ArrayList<>();
-        //loggedUser = new User("Radu"); //asta va disparea
     }
 
     public static DatabaseManager getInstance() {
@@ -28,77 +44,83 @@ public class DatabaseManager {
         return instance;
     }
 
-    //metoda asta va adauga in baza de date un ride
     public void addRide(Ride ride) {
         availableRides.add(ride);
     }
 
-    public boolean addUser(User user){
-        loggedUser = user;
-        return true;
-    }
-    //metoda asta va adauga un user in baza de date
-//<<<<<<< HEAD
-    public boolean addUser(String _id,
-                           String name,
-                           String surname,
-                           String email,
-                           String phoneNumber,
-                           String password,
-                           String username,
-                           String address,
-                           Boolean emailVerified,
-                           Boolean active,
-                           String role,
-                           String token,
-                           String cid,
-                           Number userScore,
-                           String image,
-                           Location location,
-                           String method,
-                           int age,
-                           List<Car> cars) {
-        if (!name.equals("")
-                && !email.equals("") && Patterns.EMAIL_ADDRESS.matcher(email).matches()
-                && !password.equals("")
-                && !phoneNumber.equals("") && phoneNumber.length() == 10
-//=======
-//    public boolean addUser(String name, String email, String password, String phoneNumber, int age) {
-//        if (name.length()!=0
-//                && email.length()!=0 && Patterns.EMAIL_ADDRESS.matcher(email).matches()
-//                && password.length()!=0
-//                && phoneNumber.length() == 10
-//>>>>>>> master
-                && age > 18 && age < 150) {
+    public void signUpUser(Context context, String email, String password, String name, String surname, int age) {
+        RegisterRequest registerRequest = new RegisterRequest();
+        registerRequest.setEmail(email);
+        registerRequest.setName(name);
+        registerRequest.setPassword(password);
+        registerRequest.setSurname(surname);
+        registerRequest.setAge(age);
+        registerRequest.setRole("client");
 
-            loggedUser = new User(_id, name, surname, email, phoneNumber, password, username, address, emailVerified, active, role, token, cid, userScore, image, location, method, age, cars);
-            return true;
-        }
+        Call<User> loginResponseCall = ApiClient.getUserService().userRegister(registerRequest);
+        loginResponseCall.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(context, "Register Successful", Toast.LENGTH_LONG).show();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(context, LoginActivity.class);
+                            context.startActivity(intent);
+                        }
+                    }, 300);
+                } else {
+                    Toast.makeText(context, "Register Failed", Toast.LENGTH_LONG).show();
+                }
+            }
 
-        return false;
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(context, "Throwable: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
-    //metoda asta va cauta dupa user in baza de date. Practic cele doua metode se vor folosi pentru LogIn si SignUp
-    public boolean findUser(String email, String password) {
-        String standardEmail = "radu";
-        String standardPassword = "password";
+    public void loginUser(Context context, String email, String password) {
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setEmail(email);
+        loginRequest.setPassword(password);
+        Call<User> loginResponseCall = ApiClient.getUserService().userLogin(loginRequest);
+        loginResponseCall.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(context, "Login Successful", Toast.LENGTH_LONG).show();
 
-        if (standardEmail.equals(email) && standardPassword.equals(password)) {
-//            loggedUser = new User("Radu", email, password, "0720000111", 22);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            SharedPreferenceUtil.saveEmail(email, context);
+                            SharedPreferenceUtil.savePassword(password, context);
+                            loggedUser = response.body();
+                            Intent intent = new Intent(context, MainActivity.class);
+                            intent.putExtra("EMAIL", email);
+                            context.startActivity(intent);
+                        }
+                    }, 500);
+                } else {
+                    Toast.makeText(context, "Login Failed", Toast.LENGTH_LONG).show();
+                }
+            }
 
-            return true;
-        }
-
-        return false;
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(context, "Throwable: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
-    //metoda asta va returna cursele prezente in baza de date la momentul actual
     public List<Ride> retrieveRides() {
         return availableRides;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public List<Ride> retreiveRidesForLoggedUser(){
+    public List<Ride> retreiveRidesForLoggedUser() {
         return availableRides
                 .stream()
                 .filter((ride) -> ride.getDriver().equals(loggedUser) || ride.getClients().contains(loggedUser))

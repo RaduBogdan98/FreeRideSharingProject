@@ -14,8 +14,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/darkBlue"
-            android:layout_weight="0.5">
+            android:layout_weight="0.5"
+            android:background="@color/darkBlue">
 
             <RelativeLayout
                 android:id="@+id/carLogo"
@@ -39,25 +39,26 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/lightBlue"
-            android:layout_weight="0.5">
+            android:layout_weight="0.5"
+            android:background="@color/lightBlue">
 
             <Button
                 android:id="@+id/loginButton"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Log In"
-                android:background="@drawable/rounded_corners_layout"/>
+                android:background="@drawable/rounded_corners_layout"
+                android:text="Log In" />
+
             <Button
                 android:id="@+id/signUpButton"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:layout_below="@id/loginButton"
-                android:text="Sign Up"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/rounded_corners_layout"
-                android:layout_marginTop="10dp"/>
+                android:text="Sign Up" />
 
         </RelativeLayout>
 
@@ -68,14 +69,14 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/credentialsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/credentialsLayout"
             android:layout_centerInParent="true"
-            android:orientation="vertical"
             android:layout_marginHorizontal="30dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/rounded_corners_layout">
+            android:background="@drawable/rounded_corners_layout"
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/emailEditLogin"
@@ -85,10 +86,10 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/edit_text_border"
-                android:padding="5sp"
-                android:textSize="21sp"
                 android:hint="email"
-                android:inputType="text"/>
+                android:inputType="text"
+                android:padding="5sp"
+                android:textSize="21sp" />
 
             <EditText
                 android:id="@+id/passwordEditLogin"
@@ -97,20 +98,12 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/edit_text_border"
-                android:padding="5sp"
-                android:textSize="21sp"
+                android:hint="password"
                 android:inputType="textPassword"
-                android:hint="password"/>
+                android:padding="5sp"
+                android:textSize="21sp" />
 
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/forgotPasswordText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/credentialsLayout"
-            android:text="Forgot your password?"/>
 
     </RelativeLayout>
 

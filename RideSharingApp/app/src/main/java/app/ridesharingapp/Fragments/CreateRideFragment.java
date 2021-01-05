@@ -203,9 +203,10 @@ public class CreateRideFragment extends Fragment {
                         databaseManager.addRide(
                                 new Ride(
                                         databaseManager.getLoggedUser(),
+                                        startAddress,
                                         destinationAddress,
                                         selectedDate,
-                                        new Date(1,4,2021)
+                                        selectedTime
                                         ));
                         parentActivity.switchToHomeFragment();
                     }
