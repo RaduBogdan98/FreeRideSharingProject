@@ -3,6 +3,8 @@ package app.ridesharingapp.Model;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.ridesharingapp.Database.DatabaseManager;
+
 public class Ride {
     private User driver;
     private List<User> clients;
@@ -82,5 +84,9 @@ public class Ride {
 
     public Integer getNumberOfPassengers() {
         return availablePlaces - clients.size();
+    }
+
+    public void removeClient(User user){
+        clients.remove(user);
     }
 }

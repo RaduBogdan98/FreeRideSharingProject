@@ -100,8 +100,8 @@ public class SearchRideFragment extends Fragment {
                 DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        dateText.setText(dayOfMonth + "." + (month + 1) + "." + year);
                         date = new Date(dayOfMonth, month + 1, year);
+                        dateText.setText(date.toString());
                     }
                 };
 
@@ -117,8 +117,8 @@ public class SearchRideFragment extends Fragment {
                 TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        timeText.setText(selectedHour + ":" + selectedMinute);
                         time = new Time(selectedHour, selectedMinute);
+                        timeText.setText(time.toString());
                     }
                 };
 
@@ -144,8 +144,16 @@ public class SearchRideFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (startLocation != null && destination != null && date != null && time != null && !startLocation.equals(destination)) {
-                    displayFoundRides();
+                if (startLocation != null && destination != null && date != null && time != null) {
+                    if(startLocation.equals(destination)){
+                        Toast.makeText(getContext(), "Pickup point and destination match!", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(!date.isCorrect() || !time.isCorrect()){
+                        Toast.makeText(getContext(), "Selected date or time are incorrect!", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        displayFoundRides();
+                    }
                 } else {
                     Toast.makeText(getContext(), "Please fill all necessary fields correctly!", Toast.LENGTH_SHORT).show();
                 }

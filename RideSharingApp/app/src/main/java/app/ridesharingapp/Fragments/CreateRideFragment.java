@@ -21,8 +21,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import app.ridesharingapp.Database.DatabaseManager;
@@ -123,10 +121,18 @@ public class CreateRideFragment extends Fragment {
         createRideButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (startAddress != null && destinationAddress != null && selectedDate != null && selectedTime != null && !startAddress.equals(destinationAddress)) {
-                    showPassengerNumberPickerDialog();
+                if (startAddress != null && destinationAddress != null && selectedDate != null && selectedTime != null) {
+                    if(startAddress.equals(destinationAddress)){
+                        Toast.makeText(getContext(), "Pickup point and destination match!", Toast.LENGTH_SHORT).show();
+                    }
+                    else if(!selectedDate.isCorrect() || !selectedTime.isCorrect()){
+                        Toast.makeText(getContext(), "Selected date or time are incorrect!", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        showPassengerNumberPickerDialog();
+                    }
                 } else {
-                    Toast.makeText(getContext(), "Please fill all necessary fields correctly!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please fill all necessary fields!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -149,18 +155,22 @@ public class CreateRideFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Address selectedLocation = data.getParcelableExtra("location");
+        if (resultCode == RESULT_OK) {
+            Address selectedLocation = data.getParcelableExtra("location");
 
-        if (selectedLocation != null) {
-            if (requestCode == START_ADDRESS_REQUEST && resultCode == RESULT_OK) {
-                selectedStartLocationLabel.setText(selectedLocation.getAddressLine(0));
-                startAddress = new Location(selectedLocation.getLatitude(), selectedLocation.getLongitude(), selectedLocation.getAddressLine(0));
-            } else if (requestCode == DESTINATION_ADDRESS_REQUEST && resultCode == RESULT_OK) {
-                selectedDestinationLabel.setText(selectedLocation.getAddressLine(0));
-                destinationAddress = new Location(selectedLocation.getLatitude(), selectedLocation.getLongitude(), selectedLocation.getAddressLine(0));
+            if (selectedLocation != null) {
+                if (requestCode == START_ADDRESS_REQUEST) {
+                    selectedStartLocationLabel.setText(selectedLocation.getAddressLine(0));
+                    startAddress = new Location(selectedLocation.getLatitude(), selectedLocation.getLongitude(), selectedLocation.getAddressLine(0));
+                } else if (requestCode == DESTINATION_ADDRESS_REQUEST) {
+                    selectedDestinationLabel.setText(selectedLocation.getAddressLine(0));
+                    destinationAddress = new Location(selectedLocation.getLatitude(), selectedLocation.getLongitude(), selectedLocation.getAddressLine(0));
+                }
+            } else {
+                Toast.makeText(getContext(), "No location was selected", Toast.LENGTH_LONG).show();
             }
         } else {
-            Toast.makeText(getContext(), "No location was selected...", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "No location was selected", Toast.LENGTH_LONG).show();
         }
     }
 

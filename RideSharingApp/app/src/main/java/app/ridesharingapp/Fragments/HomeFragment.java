@@ -32,23 +32,10 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View fragment = inflater.inflate(R.layout.fragment_home, container, false);
 
-        final TextView noRidesText = fragment.findViewById(R.id.no_rides_text);
         ListView listRides = fragment.findViewById(R.id.rides_list);
 
         ridesAdapter = new RidesAdapter(getContext(), R.layout.ride_details_card, DatabaseManager.getInstance().retreiveRidesForLoggedUser());
         listRides.setAdapter(ridesAdapter);
-
-        ridesAdapter.registerDataSetObserver(new DataSetObserver() {
-            @Override
-            public void onChanged() {
-                if(!ridesAdapter.getRides().isEmpty()){
-                    noRidesText.setVisibility(View.INVISIBLE);
-                }
-                else{
-                    noRidesText.setVisibility(View.VISIBLE);
-                }
-            }
-        });
 
         listRides.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -91,7 +78,8 @@ public class HomeFragment extends Fragment {
                     .setView(view)
                     .setPositiveButton("Remove Ride", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            DatabaseManager.getInstance().retrieveRides().remove(ride);
+                            DatabaseManager.getInstance().removeRide(ride);
+                            ridesAdapter.remove(ride);
                         }
                     });
         }
@@ -100,12 +88,11 @@ public class HomeFragment extends Fragment {
                     .setView(view)
                     .setNegativeButton("Leave Ride", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            ride.getClients().remove(DatabaseManager.getInstance().getLoggedUser());
+                            ride.removeClient(DatabaseManager.getInstance().getLoggedUser());
                             ridesAdapter.notifyDataSetChanged();
                         }
                     });
         }
-
 
         final AlertDialog alert = builder.create();
         alert.show();

@@ -1,5 +1,6 @@
 package app.ridesharingapp.Model;
 
+import java.util.Calendar;
 import java.util.Objects;
 
 public class Date {
@@ -54,5 +55,16 @@ public class Date {
     @Override
     public int hashCode() {
         return Objects.hash(day, month, year);
+    }
+
+    public boolean isCorrect() {
+        if (year >= Calendar.getInstance().get(Calendar.YEAR) &&
+                month >= (Calendar.getInstance().get(Calendar.MONTH) + 1) &&
+                day >= Calendar.getInstance().get(Calendar.DAY_OF_MONTH)){
+
+            return true;
+        }
+
+            return false;
     }
 }

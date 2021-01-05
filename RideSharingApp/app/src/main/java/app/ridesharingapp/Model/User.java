@@ -103,4 +103,12 @@ public class User {
     public void addCar(Car car) {
         this.cars.add(car);
     }
+
+    public void receiveRemovedRideNotification() {
+
+    }
+
+    public String getCompleteName() {
+        return name + " " + surname;
+    }
 }

@@ -5,12 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".Fragments.HomeFragment">
 
-    <TextView
-        android:id="@+id/no_rides_text"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="You have no rides to display"
+        android:src="@drawable/car_logo"
+        android:alpha="0.3"
         android:textSize="24sp"/>
 
     <ListView

@@ -1,5 +1,7 @@
 package app.ridesharingapp.Model;
 
+import java.util.Calendar;
+
 public class Time {
     private int hour;
     private int minute;
@@ -35,5 +37,15 @@ public class Time {
 
     public boolean greaterOrEqual(Time time) {
         return (this.hour > time.getHour()) || (time.getHour() == this.hour && this.minute >= time.getMinute());
+    }
+
+    public boolean isCorrect() {
+        if (hour > Calendar.getInstance().get(Calendar.HOUR_OF_DAY) ||
+                (hour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY) && minute >= Calendar.getInstance().get(Calendar.MINUTE))) {
+
+            return true;
+        }
+
+        return false;
     }
 }
