@@ -55,7 +55,7 @@ public class RidesAdapter extends ArrayAdapter<Ride> {
         itemHolder.tDestination.setText(ride.getDestination().getLocationName());
         itemHolder.tDate.setText(ride.getDepartureDate().toString());
         itemHolder.tTime.setText(ride.getDepartureTime().toString());
-        itemHolder.tPlaces.setText((4-ride.getNumberOfPassengers())+"");
+        itemHolder.tPlaces.setText(ride.getNumberOfPassengers()+"");
         itemHolder.tDriverName.setText(ride.getDriver().getName());
 
         return view;

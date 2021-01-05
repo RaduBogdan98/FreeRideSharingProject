@@ -231,7 +231,7 @@ public class UserDetailsFragment extends Fragment {
         final EditText plate = view.findViewById(R.id.dialog_plate_setter);
         final Spinner fuelType = view.findViewById(R.id.dialog_fuel_setter);
 
-        builder.setCancelable(false)
+        builder.setCancelable(true)
                 .setMessage("Set the car parameters")
                 .setView(view)
                 .setPositiveButton("Add Car", new DialogInterface.OnClickListener() {
@@ -277,7 +277,6 @@ public class UserDetailsFragment extends Fragment {
                         @Override
                         public void onFailure(Call<User> call, Throwable t) {
                             Toast.makeText(getContext(), "Add car error!", Toast.LENGTH_SHORT).show();
-
                         }
                     });
                 } else {

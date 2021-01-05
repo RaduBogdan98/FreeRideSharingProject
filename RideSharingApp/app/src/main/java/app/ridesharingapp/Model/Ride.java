@@ -11,8 +11,9 @@ public class Ride {
     private Location destination;
     private Date departureDate;
     private Time departureTime;
+    private int availablePlaces;
 
-    public Ride(User driver, Location pickupPoint, Location destination, Date departureDate, Time departureTime) {
+    public Ride(User driver, Location pickupPoint, Location destination, Date departureDate, Time departureTime, int availablePlaces) {
         this.driver = driver;
         this.clients = new ArrayList<>();
         this.car = driver.getCars().get(0);
@@ -20,6 +21,7 @@ public class Ride {
         this.destination = destination;
         this.departureDate = departureDate;
         this.departureTime = departureTime;
+        this.availablePlaces = availablePlaces;
     }
 
     public User getDriver() {
@@ -79,6 +81,6 @@ public class Ride {
     }
 
     public Integer getNumberOfPassengers() {
-        return clients.size();
+        return availablePlaces - clients.size();
     }
 }

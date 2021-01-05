@@ -67,6 +67,7 @@ public class DatabaseManager {
                         @Override
                         public void run() {
                             Intent intent = new Intent(context, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(intent);
                         }
                     }, 300);
@@ -83,6 +84,14 @@ public class DatabaseManager {
     }
 
     public void loginUser(Context context, String email, String password) {
+//        List<Car> cars = new ArrayList<>();
+//        cars.add(new Car("Skoda","Fabia","2002","HD 19 ABC", "Petrol", "silver"));
+//
+//        loggedUser = new User("Cotisel", "Radu",email, "02020202",password,"","",22, cars);
+//        Intent intent = new Intent(context, MainActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        context.startActivity(intent);
+
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setEmail(email);
         loginRequest.setPassword(password);
@@ -100,7 +109,7 @@ public class DatabaseManager {
                             SharedPreferenceUtil.savePassword(password, context);
                             loggedUser = response.body();
                             Intent intent = new Intent(context, MainActivity.class);
-                            intent.putExtra("EMAIL", email);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(intent);
                         }
                     }, 500);
