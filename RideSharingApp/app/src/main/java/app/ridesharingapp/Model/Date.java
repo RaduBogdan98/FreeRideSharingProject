@@ -27,7 +27,18 @@ public class Date {
 
     @Override
     public String toString() {
-        return day + "." + month + "." + year;
+        String sDay = day + "";
+        String sMonth = month + "";
+
+        if (day < 10) {
+            sDay = "0" + sDay;
+        }
+
+        if (month < 10) {
+            sMonth = "0" + sMonth;
+        }
+
+        return sDay + "." + sMonth + "." + year;
     }
 
     @Override

@@ -135,7 +135,7 @@
                     android:id="@+id/CID_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/email_input_layout"
+                    android:layout_below="@id/phone_input_layout"
                     android:hint="CID">
 
                     <EditText

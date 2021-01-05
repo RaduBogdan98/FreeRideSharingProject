@@ -174,10 +174,10 @@ public class UserDetailsFragment extends Fragment {
 
         //Car details area handling
         Button addCarButton = fragment.findViewById(R.id.addCarButton);
-        NonScrollListView listPayments = fragment.findViewById(R.id.cars_list);
+        NonScrollListView listCars = fragment.findViewById(R.id.cars_list);
 
         final CarsAdapter adapter = new CarsAdapter(getContext(), R.layout.car_details_card, databaseManager.getLoggedUser().getCars());
-        listPayments.setAdapter(adapter);
+        listCars.setAdapter(adapter);
 
         addCarButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,6 +202,7 @@ public class UserDetailsFragment extends Fragment {
                 parentActivity.switchToHomeFragment();
             }
         });
+
         return fragment;
     }
     private void updateProfile(){

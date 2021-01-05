@@ -85,9 +85,9 @@ public class DatabaseManager {
 
     public void loginUser(Context context, String email, String password) {
 //        List<Car> cars = new ArrayList<>();
-//        cars.add(new Car("Skoda","Fabia","2002","HD 19 ABC", "Petrol", "silver"));
+//        cars.add(new Car("Skoda", "Fabia", "2002", "HD 19 ABC", "Petrol", "silver"));
 //
-//        loggedUser = new User("Cotisel", "Radu",email, "02020202",password,"","",22, cars);
+//        loggedUser = new User("Cotisel", "Radu", email, "02020202", password, "", "", 22, cars);
 //        Intent intent = new Intent(context, MainActivity.class);
 //        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        context.startActivity(intent);

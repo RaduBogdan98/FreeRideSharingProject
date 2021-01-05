@@ -19,10 +19,21 @@ public class Time {
 
     @Override
     public String toString() {
-        return hour + ":" + minute;
+        String sHour = hour + "";
+        String sMinute = minute + "";
+
+        if (hour < 10) {
+            sHour = "0" + sHour;
+        }
+
+        if (minute < 10) {
+            sMinute = "0" + sMinute;
+        }
+
+        return sHour + ":" + sMinute;
     }
 
     public boolean greaterOrEqual(Time time) {
-        return (time.getHour() > this.hour) || (time.getHour() == this.hour && time.getMinute() >= this.minute);
+        return (this.hour > time.getHour()) || (time.getHour() == this.hour && this.minute >= time.getMinute());
     }
 }

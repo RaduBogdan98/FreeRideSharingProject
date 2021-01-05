@@ -134,7 +134,7 @@
             android:layout_margin="5sp"
             android:text="Passengers:"/>
 
-        <ListView
+        <app.ridesharingapp.LayoutElements.NonScrollListView
             android:id="@+id/ride_passenger_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

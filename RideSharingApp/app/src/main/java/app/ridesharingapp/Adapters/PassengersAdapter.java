@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -46,7 +45,8 @@ public class PassengersAdapter extends ArrayAdapter<User> {
 
         final User passenger = passengers.get(position);
 
-        itemHolder.passengerName.setText(passenger.getName());
+        if (itemHolder != null)
+            itemHolder.passengerName.setText(passenger.getName());
 
         return view;
     }

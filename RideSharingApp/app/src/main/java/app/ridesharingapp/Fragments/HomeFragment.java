@@ -4,12 +4,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.database.DataSetObserver;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,10 +16,13 @@ import androidx.fragment.app.Fragment;
 import app.ridesharingapp.Adapters.PassengersAdapter;
 import app.ridesharingapp.Adapters.RidesAdapter;
 import app.ridesharingapp.Database.DatabaseManager;
+import app.ridesharingapp.LayoutElements.NonScrollListView;
 import app.ridesharingapp.Model.Ride;
 import app.ridesharingapp.R;
 
 public class HomeFragment extends Fragment {
+    private RidesAdapter ridesAdapter;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -34,13 +35,13 @@ public class HomeFragment extends Fragment {
         final TextView noRidesText = fragment.findViewById(R.id.no_rides_text);
         ListView listRides = fragment.findViewById(R.id.rides_list);
 
-        final RidesAdapter adapter = new RidesAdapter(getContext(), R.layout.ride_details_card, DatabaseManager.getInstance().retreiveRidesForLoggedUser());
-        listRides.setAdapter(adapter);
+        ridesAdapter = new RidesAdapter(getContext(), R.layout.ride_details_card, DatabaseManager.getInstance().retreiveRidesForLoggedUser());
+        listRides.setAdapter(ridesAdapter);
 
-        adapter.registerDataSetObserver(new DataSetObserver() {
+        ridesAdapter.registerDataSetObserver(new DataSetObserver() {
             @Override
             public void onChanged() {
-                if(!adapter.getRides().isEmpty()){
+                if(!ridesAdapter.getRides().isEmpty()){
                     noRidesText.setVisibility(View.INVISIBLE);
                 }
                 else{
@@ -52,7 +53,7 @@ public class HomeFragment extends Fragment {
         listRides.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Ride clickedRide = adapter.getRides().get(position);
+                Ride clickedRide = DatabaseManager.getInstance().retreiveRidesForLoggedUser().get(position);
                 startRideDetailsDialog(clickedRide);
             }
         });
@@ -80,13 +81,13 @@ public class HomeFragment extends Fragment {
         availablePlaces.setText(ride.getNumberOfPassengers()+"");
         driverName.setText(ride.getDriver().getName());
 
-        ListView passengerList = view.findViewById(R.id.ride_passenger_list);
+        NonScrollListView passengerList = view.findViewById(R.id.ride_passenger_list);
 
-        final PassengersAdapter adapter = new PassengersAdapter(getContext(), R.layout.ride_details_card, ride.getClients());
+        final PassengersAdapter adapter = new PassengersAdapter(getContext(), R.layout.passenger_details, ride.getClients());
         passengerList.setAdapter(adapter);
 
         if(ride.getDriver().equals(DatabaseManager.getInstance().getLoggedUser())){
-            builder.setCancelable(false)
+            builder.setCancelable(true)
                     .setView(view)
                     .setPositiveButton("Remove Ride", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -95,11 +96,12 @@ public class HomeFragment extends Fragment {
                     });
         }
         else{
-            builder.setCancelable(false)
+            builder.setCancelable(true)
                     .setView(view)
                     .setNegativeButton("Leave Ride", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             ride.getClients().remove(DatabaseManager.getInstance().getLoggedUser());
+                            ridesAdapter.notifyDataSetChanged();
                         }
                     });
         }
