@@ -3,6 +3,8 @@ package app.ridesharingapp.Model;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.ridesharingapp.Database.DatabaseManager;
+
 public class Ride {
     private String _id;
     private User driver;
@@ -11,10 +13,20 @@ public class Ride {
     private Location pickupPoint;
     private Location destination;
     private Date departureDate;
-    private Time departureTime;
+    private String departureTime;
     private int availablePlaces;
 
-    public Ride(User driver, Location pickupPoint, Location destination, Date departureDate, Time departureTime, int availablePlaces) {
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    private String status;
+
+    public Ride(User driver, Location pickupPoint, Location destination, Date departureDate, String departureTime, int availablePlaces) {
         this.driver = driver;
         this.clients = new ArrayList<>();
         this.car = driver.getCars().get(0);
@@ -23,6 +35,7 @@ public class Ride {
         this.departureDate = departureDate;
         this.departureTime = departureTime;
         this.availablePlaces = availablePlaces;
+        this.status = "pending";
     }
 
 
@@ -90,15 +103,31 @@ public class Ride {
         this.departureDate = departureDate;
     }
 
-    public Time getDepartureTime() {
+    public String getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(Time departureTime) {
+    public void setDepartureTime(String departureTime) {
         this.departureTime = departureTime;
     }
 
     public Integer getNumberOfPassengers() {
-        return availablePlaces - clients.size();
+        if(this.clients != null){
+            return this.availablePlaces - this.clients.size();
+        }
+        this.clients = new ArrayList<>();
+        return availablePlaces;
+    }
+
+    public void removeClient(User user) {
+        clients.remove(user);
+
+        //adauga logica aici
+    }
+
+    public void addClient(User user) {
+        clients.add(user);
+
+        //adauga logica aici
     }
 }

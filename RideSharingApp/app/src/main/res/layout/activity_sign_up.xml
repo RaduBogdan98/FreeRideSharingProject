@@ -76,10 +76,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/edit_text_border"
                 android:hint="name"
-                android:inputType="textPersonName"
+                android:inputType="textCapWords"
+                android:padding="5sp"
+                android:textSize="21sp" />
+
+            <EditText
+                android:id="@+id/surnameEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/edit_text_border"
+                android:hint="surname"
+                android:inputType="textCapWords"
                 android:padding="5sp"
                 android:textSize="21sp" />
 
@@ -88,7 +100,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/edit_text_border"
                 android:hint="email"
@@ -105,18 +116,6 @@
                 android:background="@drawable/edit_text_border"
                 android:hint="password"
                 android:inputType="textPassword"
-                android:padding="5sp"
-                android:textSize="21sp" />
-
-            <EditText
-                android:id="@+id/surnameEdit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/edit_text_border"
-                android:hint="surname"
-                android:inputType="textPersonName"
                 android:padding="5sp"
                 android:textSize="21sp" />
 

@@ -1,10 +1,12 @@
 package app.ridesharingapp.Services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import app.ridesharingapp.Model.Requests.AddCarRequest;
 import app.ridesharingapp.Model.Requests.AddRideRequest;
+import app.ridesharingapp.Model.Requests.JoinRideRequest;
 import app.ridesharingapp.Model.Requests.LoginRequest;
 import app.ridesharingapp.Model.Requests.RegisterRequest;
 import app.ridesharingapp.Model.Requests.UserUpdateRequest;
@@ -47,21 +49,28 @@ public interface UserService {
 
 
     // RIDES
-    @GET()
-    Call<Ride> getRide(@Path("") String path);
+    @GET("api/rides/{rideID}")
+    Call<Ride> getRide(@Path("rideID") String rideID);
 
-    @GET()
-    Call<List<Ride>> getAllRides(@Path("") String path);
+    @POST("api/rides/joinRide/{rideID}")
+    Call<Ride> joinRide(@Path("rideID") String rideID, @Body JoinRideRequest joinRideRequest);
+
+    @GET("api/rides")
+    Call<ArrayList<Ride>> getAllRides();
 
 
-    @POST("")
+    @POST("api/rides")
     Call<Ride> createRide(@Body AddRideRequest ride);
 
-    @DELETE()
-    Call<Ride> deleteRide(@Path("") String userEmail);
+    @DELETE("api/rides/{rideID}")
+    Call<Ride> deleteRide(@Path("rideID") String rideID);
 
-    @PATCH()
-    Call<Ride> updateRide(@Path("") String path, @Body Ride update);
+
+    @POST("api/rides/leave/{rideID}")
+    Call<Ride> leaveRide(@Path("rideID") String rideID,@Body JoinRideRequest joinRideRequest);
+
+//    @PATCH()
+//    Call<Ride> updateRide(@Path("") String path, @Body Ride update);
 
 
 

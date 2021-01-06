@@ -121,4 +121,12 @@ public class User {
     public void addCar(Car car) {
         this.car.add(car);
     }
+
+    public void receiveRemovedRideNotification() {
+
+    }
+
+    public String getCompleteName() {
+        return this.name + " " + this.surname;
+    }
 }

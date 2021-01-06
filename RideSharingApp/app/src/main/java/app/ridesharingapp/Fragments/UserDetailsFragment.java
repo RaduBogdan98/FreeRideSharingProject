@@ -168,10 +168,10 @@ public class UserDetailsFragment extends Fragment {
 
         //Car details area handling
         Button addCarButton = fragment.findViewById(R.id.addCarButton);
-        NonScrollListView listPayments = fragment.findViewById(R.id.cars_list);
+        NonScrollListView listCars = fragment.findViewById(R.id.cars_list);
 
         final CarsAdapter adapter = new CarsAdapter(getContext(), R.layout.car_details_card, databaseManager.getLoggedUser().getCars());
-        listPayments.setAdapter(adapter);
+        listCars.setAdapter(adapter);
 
         addCarButton.setOnClickListener(v -> showCarCreatorDialog());
 
@@ -180,11 +180,21 @@ public class UserDetailsFragment extends Fragment {
 
         //Home button handling
         FloatingActionButton homeButton = fragment.findViewById(R.id.floating_home_button_user);
+//<<<<<<< HEAD
         homeButton.setOnClickListener(v -> parentActivity.switchToHomeFragment());
+//=======
+//        homeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                parentActivity.switchToHomeFragment();
+//            }
+//        });
+//
+//>>>>>>> a6f655379c9058a274160408c2c1280f2b679a00
         return fragment;
     }
     private void updateProfile(){
-        Call<User> updateCall = ApiClient.getUserService().updateUser(SharedPreferenceUtil.getEmail(getContext()),databaseManager.getLoggedUser());
+        Call<User> updateCall = ApiClient.getUserService().updateUser(databaseManager.getLoggedUser().getEmail(),databaseManager.getLoggedUser());
         updateCall.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {

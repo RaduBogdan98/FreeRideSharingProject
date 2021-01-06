@@ -57,14 +57,34 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.google_map);
 
         //Initialize fused location
-        client = LocationServices.getFusedLocationProviderClient(this);
+        this.client = LocationServices.getFusedLocationProviderClient(this);
 
         //Check permission
         if (ActivityCompat.checkSelfPermission(MapsActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
-            getCurrentLocation();
+            Task<Location> task = client.getLastLocation();
+            task.addOnSuccessListener(location -> {
+                //When success
+                if (location != null) {
+                    //Sync map
+                    supportMapFragment.getMapAsync(googleMap -> {
+                        //Initialize latitude and  longitude
+                        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
+                        //Create marker options
+                        MarkerOptions options = new MarkerOptions().position(latLng).title("Current Location");
+
+                        //Zoom map
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+
+                        //Add marker to map
+                        currentMarker = googleMap.addMarker(options);
+
+                        setSelectedAddress(latLng);
+                    });
+                }
+            });
         } else {
             //When permission denied, request permission
             ActivityCompat.requestPermissions(MapsActivity.this,
@@ -72,22 +92,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         searchButton = findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onLocationSearch();
-            }
-        });
+        searchButton.setOnClickListener(v -> onLocationSearch());
 
         Button submitButton = findViewById(R.id.submitButton);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent data = new Intent();
-                data.putExtra("location", selectedAddress);
-                setResult(RESULT_OK, data);
-                finish();
-            }
+        submitButton.setOnClickListener(v -> {
+            Intent data = new Intent();
+            data.putExtra("location", selectedAddress);
+            setResult(RESULT_OK, data);
+            finish();
         });
 
         supportMapFragment.getMapAsync(this);
@@ -96,31 +108,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void getCurrentLocation() {
         //Initialize task location
         Task<Location> task = client.getLastLocation();
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(final Location location) {
-                //When success
-                if (location != null) {
-                    //Sync map
-                    supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-                        @Override
-                        public void onMapReady(GoogleMap googleMap) {
-                            //Initialize latitude and  longitude
-                            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        task.addOnSuccessListener(location -> {
+            //When success
+            if (location != null) {
+                //Sync map
+                supportMapFragment.getMapAsync(googleMap -> {
+                    //Initialize latitude and  longitude
+                    LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-                            //Create marker options
-                            MarkerOptions options = new MarkerOptions().position(latLng).title("Current Location");
+                    //Create marker options
+                    MarkerOptions options = new MarkerOptions().position(latLng).title("Current Location");
 
-                            //Zoom map
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                    //Zoom map
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
 
-                            //Add marker to map
-                            currentMarker = googleMap.addMarker(options);
+                    //Add marker to map
+                    currentMarker = googleMap.addMarker(options);
 
-                            setSelectedAddress(latLng);
-                        }
-                    });
-                }
+                    setSelectedAddress(latLng);
+                });
             }
         });
     }
@@ -169,22 +175,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
 
             //Remove last marker
-            currentMarker.remove();
+            if (currentMarker != null) {
+                currentMarker.remove();
+            }
 
             //Add marker to map
             currentMarker = map.addMarker(options);
             setSelectedAddress(latLng);
-        }else if(resultCode == AutocompleteActivity.RESULT_ERROR){
+        } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
             Status status = Autocomplete.getStatusFromIntent(data);
             Toast.makeText(getApplicationContext(), status.getStatusMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
-    private void setSelectedAddress(LatLng location){
+    private void setSelectedAddress(LatLng location) {
         try {
             Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
             List<Address> addressList = geocoder.getFromLocation(location.latitude, location.longitude, 1);
-            if(addressList!=null && !addressList.isEmpty()){
+            if (addressList != null && !addressList.isEmpty()) {
                 selectedAddress = addressList.get(0);
             }
         } catch (IOException e) {

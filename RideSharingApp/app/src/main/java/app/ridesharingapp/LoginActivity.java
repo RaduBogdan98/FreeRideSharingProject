@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         loginButton.setOnClickListener(v -> {
+            databaseManager.getAllRides(getApplicationContext());
             databaseManager.loginUser(getApplicationContext(), emailText.getText().toString(), passwordText.getText().toString());
         });
     }
