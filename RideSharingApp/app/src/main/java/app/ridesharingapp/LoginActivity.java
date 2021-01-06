@@ -4,10 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import app.ridesharingapp.Database.DatabaseManager;
 import app.ridesharingapp.Utils.SharedPreferenceUtil;
@@ -33,19 +31,13 @@ public class LoginActivity extends AppCompatActivity {
         Button loginButton = findViewById(R.id.loginButton);
         Button signUpButton = findViewById(R.id.signUpButton);
 
-        signUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
-                startActivity(intent);
-            }
+        signUpButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+            startActivity(intent);
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                databaseManager.loginUser(getApplicationContext(), emailText.getText().toString(), passwordText.getText().toString());
-            }
+        loginButton.setOnClickListener(v -> {
+            databaseManager.loginUser(getApplicationContext(), emailText.getText().toString(), passwordText.getText().toString());
         });
     }
 

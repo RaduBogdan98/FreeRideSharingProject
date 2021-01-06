@@ -1,5 +1,6 @@
 package app.ridesharingapp.Database;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -17,6 +18,8 @@ import app.ridesharingapp.LoginActivity;
 import app.ridesharingapp.MainActivity;
 import app.ridesharingapp.Model.Car;
 import app.ridesharingapp.Model.Location;
+import app.ridesharingapp.Model.Requests.AddCarRequest;
+import app.ridesharingapp.Model.Requests.AddRideRequest;
 import app.ridesharingapp.Model.Requests.LoginRequest;
 import app.ridesharingapp.Model.Requests.RegisterRequest;
 import app.ridesharingapp.Model.Ride;
@@ -44,10 +47,6 @@ public class DatabaseManager {
         return instance;
     }
 
-    public void addRide(Ride ride) {
-        availableRides.add(ride);
-    }
-
     public void signUpUser(Context context, String email, String password, String name, String surname, int age) {
         RegisterRequest registerRequest = new RegisterRequest();
         registerRequest.setEmail(email);
@@ -55,27 +54,22 @@ public class DatabaseManager {
         registerRequest.setPassword(password);
         registerRequest.setSurname(surname);
         registerRequest.setAge(age);
-        registerRequest.setRole("client");
 
-        Call<User> loginResponseCall = ApiClient.getUserService().userRegister(registerRequest);
-        loginResponseCall.enqueue(new Callback<User>() {
+        Call<User> registerResponseCall = ApiClient.getUserService().userRegister(registerRequest);
+        registerResponseCall.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(context, "Register Successful", Toast.LENGTH_LONG).show();
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent intent = new Intent(context, LoginActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);
-                        }
+                    new Handler().postDelayed(() -> {
+                        Intent intent = new Intent(context, LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
                     }, 300);
                 } else {
                     Toast.makeText(context, "Register Failed", Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Toast.makeText(context, "Throwable: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
@@ -84,43 +78,85 @@ public class DatabaseManager {
     }
 
     public void loginUser(Context context, String email, String password) {
-//        List<Car> cars = new ArrayList<>();
-//        cars.add(new Car("Skoda","Fabia","2002","HD 19 ABC", "Petrol", "silver"));
-//
-//        loggedUser = new User("Cotisel", "Radu",email, "02020202",password,"","",22, cars);
-//        Intent intent = new Intent(context, MainActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        context.startActivity(intent);
-
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setEmail(email);
         loginRequest.setPassword(password);
+
         Call<User> loginResponseCall = ApiClient.getUserService().userLogin(loginRequest);
         loginResponseCall.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(context, "Login Successful", Toast.LENGTH_LONG).show();
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            SharedPreferenceUtil.saveEmail(email, context);
-                            SharedPreferenceUtil.savePassword(password, context);
-                            loggedUser = response.body();
-                            Intent intent = new Intent(context, MainActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);
-                        }
-                    }, 500);
+                    new Handler().postDelayed(() -> {
+                        SharedPreferenceUtil.saveEmail(email, context);
+                        SharedPreferenceUtil.savePassword(password, context);
+                        loggedUser = response.body();
+                        System.out.println(loggedUser);
+                        System.out.println(loggedUser.getCars());
+                        Intent intent = new Intent(context, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
+                    }, 300);
                 } else {
                     Toast.makeText(context, "Login Failed", Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Toast.makeText(context, "Throwable: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void addCar(Context context, AddCarRequest addCarRequest, AlertDialog alert){
+        Call<User> userCall = ApiClient.getUserService().addCar(addCarRequest);
+        userCall.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                Toast.makeText(context, "Car added successfully!", Toast.LENGTH_SHORT).show();
+                alert.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(context, "Add car error!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void addRide(Context context,Ride ride) {
+        AddRideRequest rideRequest = new AddRideRequest();
+        rideRequest.setDriver(ride.getDriver().getEmail());
+        rideRequest.setAvailablePlaces(ride.getNumberOfPassengers());
+        rideRequest.setCarName(ride.getCar().getPlate());
+        rideRequest.setDepartureDate(ride.getDepartureDate());
+        rideRequest.setDepartureTime(ride.getDepartureTime().toString());
+
+        ArrayList<Double> pickup = new ArrayList<>();
+        pickup.add(ride.getPickupPoint().getLatLng().latitude);
+        pickup.add(ride.getPickupPoint().getLatLng().longitude);
+        ArrayList<Double> destination = new ArrayList<>();
+        destination.add(ride.getDestination().getLatLng().latitude);
+        destination.add(ride.getDestination().getLatLng().longitude);
+
+        rideRequest.setPickupName(ride.getPickupPoint().getLocationName());
+        rideRequest.setDestinationName(ride.getDestination().getLocationName());
+
+        rideRequest.setPickup_lat_long(pickup);
+        rideRequest.setDestination_lat_long(destination);
+
+        Call<Ride> rideCall = ApiClient.getUserService().createRide(rideRequest);
+        rideCall.enqueue(new Callback<Ride>() {
+            @Override
+            public void onResponse(Call<Ride> call, Response<Ride> response) {
+                Toast.makeText(context, "Add car error!", Toast.LENGTH_SHORT).show();
+                availableRides.add(ride);
+            }
+
+            @Override
+            public void onFailure(Call<Ride> call, Throwable t) {
+
             }
         });
     }

@@ -1,7 +1,6 @@
 package app.ridesharingapp.Fragments;
 import android.os.Bundle;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -9,15 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import androidx.fragment.app.Fragment;
-import com.squareup.picasso.Picasso;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import app.ridesharingapp.Adapters.CarsAdapter;
 import app.ridesharingapp.Database.DatabaseManager;
 import app.ridesharingapp.LayoutElements.NonScrollListView;
@@ -41,6 +35,7 @@ public class UserDetailsFragment extends Fragment {
     public UserDetailsFragment(MainActivity parentActivity) {
         this.parentActivity = parentActivity;
         this.loggedUser = databaseManager.getLoggedUser();
+        System.out.println(loggedUser);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,8 +58,7 @@ public class UserDetailsFragment extends Fragment {
         phoneEdit.setText(loggedUser.getPhoneNumber());
         CIDEdit.setText(loggedUser.getCid());
         addressEdit.setText(loggedUser.getAddress());
-        ageEdit.setText("0");
-
+        ageEdit.setText(loggedUser.getAge()+"");
         nameEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -179,29 +173,14 @@ public class UserDetailsFragment extends Fragment {
         final CarsAdapter adapter = new CarsAdapter(getContext(), R.layout.car_details_card, databaseManager.getLoggedUser().getCars());
         listPayments.setAdapter(adapter);
 
-        addCarButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCarCreatorDialog();
-            }
-        });
+        addCarButton.setOnClickListener(v -> showCarCreatorDialog());
 
         Button updateProfileButton = fragment.findViewById(R.id.updateUser);
-        updateProfileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateProfile();
-            }
-        });
+        updateProfileButton.setOnClickListener(v -> updateProfile());
 
         //Home button handling
         FloatingActionButton homeButton = fragment.findViewById(R.id.floating_home_button_user);
-        homeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                parentActivity.switchToHomeFragment();
-            }
-        });
+        homeButton.setOnClickListener(v -> parentActivity.switchToHomeFragment());
         return fragment;
     }
     private void updateProfile(){
@@ -234,54 +213,38 @@ public class UserDetailsFragment extends Fragment {
         builder.setCancelable(true)
                 .setMessage("Set the car parameters")
                 .setView(view)
-                .setPositiveButton("Add Car", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
+                .setPositiveButton("Add Car", (dialog, id) -> {
                 });
 
         final AlertDialog alert = builder.create();
         alert.show();
 
-        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String manufacturer = manufacturerName.getText().toString().trim();
-                String model = modelName.getText().toString().trim();
-                String year = yearOfManufacturing.getText().toString().trim();
-                String color = colorName.getText().toString().trim();
-                String fuel = fuelType.getSelectedItem().toString().trim();
-                String _plate = plate.getText().toString().trim();
+        alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String manufacturer = manufacturerName.getText().toString().trim();
+            String model = modelName.getText().toString().trim();
+            String year = yearOfManufacturing.getText().toString().trim();
+            String color = colorName.getText().toString().trim();
+            String fuel = fuelType.getSelectedItem().toString().trim();
+            String _plate = plate.getText().toString().trim();
 
 
-                if ((manufacturer.length() != 0) &&
-                        (model.length() != 0) &&
-                        (year.length() == 4 && (year.startsWith("19") || year.startsWith("20"))) &&
-                        (color.length() != 0)) {
+            if ((manufacturer.length() != 0) &&
+                    (model.length() != 0) &&
+                    (year.length() == 4 && (year.startsWith("19") || year.startsWith("20"))) &&
+                    (color.length() != 0)) {
 
 
-                    String Email = SharedPreferenceUtil.getEmail(getContext());
-                    String fullModel = manufacturer + " " + model;
-                    Car car = new Car(Email,fullModel,year,_plate,fuel,color);
-                    databaseManager.getLoggedUser().addCar(car);
+                String Email = SharedPreferenceUtil.getEmail(getContext());
+                String fullModel = manufacturer + " " + model;
+                Car car = new Car(Email,fullModel,year,_plate,fuel,color);
+                System.out.println(car);
+                databaseManager.getLoggedUser().addCar(car);
 
+                AddCarRequest addCarRequest = new AddCarRequest(Email,fullModel,year,_plate,color,fuel);
+                databaseManager.addCar(getContext(),addCarRequest,alert);
 
-                    AddCarRequest addCarRequest = new AddCarRequest(Email,fullModel,year,_plate,color,fuel);
-                    Call<User> userCall = ApiClient.getUserService().addCar(addCarRequest);
-                    userCall.enqueue(new Callback<User>() {
-                        @Override
-                        public void onResponse(Call<User> call, Response<User> response) {
-                            Toast.makeText(getContext(), "Car added successfully!", Toast.LENGTH_SHORT).show();
-                            alert.dismiss();
-                        }
-
-                        @Override
-                        public void onFailure(Call<User> call, Throwable t) {
-                            Toast.makeText(getContext(), "Add car error!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-                    Toast.makeText(getContext(), "Please fill all the necessary fields!", Toast.LENGTH_SHORT).show();
-                }
+            } else {
+                Toast.makeText(getContext(), "Please fill all the necessary fields!", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -11,7 +11,25 @@ public class User {
     private String address;
     private String cid;
     private int age;
-    private List<Car> cars;
+    private List<Car> car;
+    private String token;
+    private Location location;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
     public User() {
     }
@@ -25,7 +43,7 @@ public class User {
         this.address = address;
         this.cid = cid;
         this.age = age;
-        this.cars = cars;
+        this.car = cars;
     }
 
     public String getName() {
@@ -93,14 +111,14 @@ public class User {
     }
 
     public List<Car> getCars() {
-        return cars;
+        return car;
     }
 
     public void setCars(List<Car> cars) {
-        this.cars = cars;
+        this.car = cars;
     }
 
     public void addCar(Car car) {
-        this.cars.add(car);
+        this.car.add(car);
     }
 }

@@ -13,7 +13,7 @@ public class ApiClient {
         OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("https://freeridesharingappproject.eu-gb.cf.appdomain.cloud/")
+                .baseUrl("https://freeridesharingappproject-chipper-raven.eu-gb.mybluemix.net/")
                 .client(okHttpClient)
                 .build();
         return retrofit;

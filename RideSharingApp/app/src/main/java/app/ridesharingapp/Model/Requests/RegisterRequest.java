@@ -6,15 +6,6 @@ public class RegisterRequest {
     private String email;
     private String password;
     private int age;
-    private String role;
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 
     public int getAge() {
         return age;

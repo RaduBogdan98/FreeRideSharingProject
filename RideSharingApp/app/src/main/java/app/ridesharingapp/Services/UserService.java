@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import app.ridesharingapp.Model.Requests.AddCarRequest;
+import app.ridesharingapp.Model.Requests.AddRideRequest;
 import app.ridesharingapp.Model.Requests.LoginRequest;
 import app.ridesharingapp.Model.Requests.RegisterRequest;
 import app.ridesharingapp.Model.Requests.UserUpdateRequest;
@@ -51,8 +52,10 @@ public interface UserService {
 
     @GET()
     Call<List<Ride>> getAllRides(@Path("") String path);
+
+
     @POST("")
-    Call<Ride> createRide(@Body Ride ride);
+    Call<Ride> createRide(@Body AddRideRequest ride);
 
     @DELETE()
     Call<Ride> deleteRide(@Path("") String userEmail);

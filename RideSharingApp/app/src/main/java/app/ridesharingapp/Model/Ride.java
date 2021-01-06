@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ride {
+    private String _id;
     private User driver;
     private List<User> clients;
     private Car car;
@@ -22,6 +23,23 @@ public class Ride {
         this.departureDate = departureDate;
         this.departureTime = departureTime;
         this.availablePlaces = availablePlaces;
+    }
+
+
+    public int getAvailablePlaces() {
+        return availablePlaces;
+    }
+
+    public void setAvailablePlaces(int availablePlaces) {
+        this.availablePlaces = availablePlaces;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public User getDriver() {

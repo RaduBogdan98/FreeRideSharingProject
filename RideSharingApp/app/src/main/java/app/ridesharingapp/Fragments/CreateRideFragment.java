@@ -72,71 +72,41 @@ public class CreateRideFragment extends Fragment {
         selectedStartLocationLabel = fragment.findViewById(R.id.startLocation_label);
         selectedDestinationLabel = fragment.findViewById(R.id.destination_label);
 
-        selectDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        selectedDateLabel.setText(dayOfMonth + "." + (month + 1) + "." + year);
-                        selectedDate = new Date(dayOfMonth, month + 1, year);
-                    }
-                };
+        selectDateButton.setOnClickListener(v -> {
+            DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+                selectedDateLabel.setText(dayOfMonth + "." + (month + 1) + "." + year);
+                selectedDate = new Date(dayOfMonth, month + 1, year);
+            };
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), listener, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-                datePickerDialog.setTitle("Select Date");
-                datePickerDialog.show();
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), listener, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.setTitle("Select Date");
+            datePickerDialog.show();
+        });
+
+        selectTimeButton.setOnClickListener(v -> {
+            TimePickerDialog.OnTimeSetListener listener = (timePicker, selectedHour, selectedMinute) -> {
+                selectedTimeLabel.setText(selectedHour + ":" + selectedMinute);
+                selectedTime = new Time(selectedHour, selectedMinute);
+            };
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), listener, Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), true);
+            timePickerDialog.setTitle("Select Time");
+            timePickerDialog.show();
+        });
+
+        selectStartLocationButton.setOnClickListener(v -> openMapsActivity(START_ADDRESS_REQUEST));
+
+        selectDestinationButton.setOnClickListener(v -> openMapsActivity(DESTINATION_ADDRESS_REQUEST));
+
+        createRideButton.setOnClickListener(v -> {
+            if (startAddress != null && destinationAddress != null && selectedDate != null && selectedTime != null) {
+                showPassengerNumberPickerDialog();
+            } else {
+                Toast.makeText(getContext(), "Please fill all necessary fields!", Toast.LENGTH_SHORT).show();
             }
         });
 
-        selectTimeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerDialog.OnTimeSetListener listener = new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        selectedTimeLabel.setText(selectedHour + ":" + selectedMinute);
-                        selectedTime = new Time(selectedHour, selectedMinute);
-                    }
-                };
-
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), listener, Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), true);
-                timePickerDialog.setTitle("Select Time");
-                timePickerDialog.show();
-            }
-        });
-
-        selectStartLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openMapsActivity(START_ADDRESS_REQUEST);
-            }
-        });
-
-        selectDestinationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openMapsActivity(DESTINATION_ADDRESS_REQUEST);
-            }
-        });
-
-        createRideButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (startAddress != null && destinationAddress != null && selectedDate != null && selectedTime != null) {
-                    showPassengerNumberPickerDialog();
-                } else {
-                    Toast.makeText(getContext(), "Please fill all necessary fields!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        homeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                parentActivity.switchToHomeFragment();
-            }
-        });
+        homeButton.setOnClickListener(v -> parentActivity.switchToHomeFragment());
 
         // Inflate the layout for this fragment
         return fragment;
@@ -200,14 +170,10 @@ public class CreateRideFragment extends Fragment {
                 .setView(view)
                 .setPositiveButton("Create", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        databaseManager.addRide(
-                                new Ride(
-                                        databaseManager.getLoggedUser(),
-                                        startAddress,
-                                        destinationAddress,
-                                        selectedDate,
-                                        selectedTime
-                                        ));
+                        String availableSeats = numberOfPassengers.getText().toString();
+                        int seats = Integer.parseInt(availableSeats);
+                        Ride ride = new Ride(databaseManager.getLoggedUser(),startAddress,destinationAddress,selectedDate,selectedTime,seats);
+                        databaseManager.addRide(getContext(),ride);
                         parentActivity.switchToHomeFragment();
                     }
                 });
