@@ -73,6 +73,4 @@ public interface UserService {
 //    Call<Ride> updateRide(@Path("") String path, @Body Ride update);
 
 
-
-
 }

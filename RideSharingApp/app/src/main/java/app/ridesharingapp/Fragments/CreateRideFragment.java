@@ -71,12 +71,9 @@ public class CreateRideFragment extends Fragment {
         selectedDestinationLabel = fragment.findViewById(R.id.destination_label);
 
         selectDateButton.setOnClickListener(v -> {
-            DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                    selectedDate = new Date(dayOfMonth, month + 1, year);
-                    selectedDateLabel.setText(selectedDate.toString());
-                }
+            DatePickerDialog.OnDateSetListener listener = (view, year, month, dayOfMonth) -> {
+                selectedDate = new Date(dayOfMonth, month + 1, year);
+                selectedDateLabel.setText(selectedDate.toString());
             };
 
             DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), listener, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
@@ -179,7 +176,6 @@ public class CreateRideFragment extends Fragment {
                     int seats = Integer.parseInt(availableSeats);
                     String timen = selectedTime.toString();
                     Ride ride = new Ride(databaseManager.getLoggedUser(),startAddress,destinationAddress,selectedDate,timen,seats);
-                    System.out.println("DATE HERE: "+ selectedDate);
                     databaseManager.addRide(getContext(),ride);
                     parentActivity.switchToHomeFragment();
                 });

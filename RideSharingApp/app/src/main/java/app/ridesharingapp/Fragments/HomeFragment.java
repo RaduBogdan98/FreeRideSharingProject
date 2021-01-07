@@ -71,22 +71,18 @@ public class HomeFragment extends Fragment {
         if(ride.getDriver().getName().equals(databaseManager.getLoggedUser().getName())){
             builder.setCancelable(true)
                     .setView(view)
-                    .setPositiveButton("Remove Ride", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            databaseManager.removeRide(getContext(),ride);
-                            ridesAdapter.remove(ride);
-                        }
+                    .setPositiveButton("Remove Ride", (dialog, id) -> {
+                        databaseManager.removeRide(getContext(),ride);
+                        ridesAdapter.remove(ride);
                     });
         }
         else{
             builder.setCancelable(true)
                     .setView(view)
-                    .setNegativeButton("Leave Ride", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            databaseManager.leaveRide(getContext(),ride.get_id());
-                            ride.removeClient(databaseManager.getLoggedUser());
-                            ridesAdapter.notifyDataSetChanged();
-                        }
+                    .setNegativeButton("Leave Ride", (dialog, id) -> {
+                        databaseManager.leaveRide(getContext(),ride.get_id());
+                        ride.removeClient(databaseManager.getLoggedUser());
+                        ridesAdapter.notifyDataSetChanged();
                     });
         }
 

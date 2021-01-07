@@ -35,28 +35,19 @@ public class MainActivity extends AppCompatActivity {
         MenuItem searchRideButton = navbarMenu.findItem(R.id.navigation_search);
         MenuItem userDetailsButton = navbarMenu.findItem(R.id.navigation_user);
 
-        createRideButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switchToCreateRideFragment();
-                return true;
-            }
+        createRideButton.setOnMenuItemClickListener(item -> {
+            switchToCreateRideFragment();
+            return true;
         });
 
-        searchRideButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switchToSearchRideFragment();
-                return true;
-            }
+        searchRideButton.setOnMenuItemClickListener(item -> {
+            switchToSearchRideFragment();
+            return true;
         });
 
-        userDetailsButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switchToUserDetailsFragment();
-                return true;
-            }
+        userDetailsButton.setOnMenuItemClickListener(item -> {
+            switchToUserDetailsFragment();
+            return true;
         });
 
         switchToHomeFragment();
@@ -112,16 +103,8 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Please connect to the internet")
                 .setCancelable(false)
-                .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        isConnected(getApplicationContext());
-                    }
-                })
-                .setNegativeButton("Quit", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        finish();
-                    }
-                });
+                .setPositiveButton("Retry", (dialog, id) -> isConnected(getApplicationContext()))
+                .setNegativeButton("Quit", (dialog, id) -> finish());
         AlertDialog alert = builder.create();
         alert.show();
     }

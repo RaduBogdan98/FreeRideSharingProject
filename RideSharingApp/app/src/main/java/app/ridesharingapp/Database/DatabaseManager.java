@@ -84,8 +84,6 @@ public class DatabaseManager {
                         SharedPreferenceUtil.saveEmail(email, context);
                         SharedPreferenceUtil.savePassword(password, context);
                         loggedUser = response.body();
-                        System.out.println(loggedUser);
-                        System.out.println(loggedUser.getCars());
                         Intent intent = new Intent(context, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
@@ -159,13 +157,13 @@ public class DatabaseManager {
         rideCall.enqueue(new Callback<Ride>() {
             @Override
             public void onResponse(Call<Ride> call, Response<Ride> response) {
-                Toast.makeText(context, "MERE delete ride! ", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Ride deleted! ", Toast.LENGTH_LONG).show();
                 availableRides.remove(ride);
             }
 
             @Override
             public void onFailure(Call<Ride> call, Throwable t) {
-                Toast.makeText(context, "NU MERE delete ride! " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Ride delete failed! " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -181,7 +179,7 @@ public class DatabaseManager {
 
             @Override
             public void onFailure(Call<ArrayList<Ride>> call, Throwable t) {
-                Toast.makeText(context, "NU MERE! " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Rides not fetched " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -190,7 +188,6 @@ public class DatabaseManager {
     }
 
     public List<Ride> retreiveRidesForLoggedUser(Context context) {
-//        this.getAllRides(context);
         return availableRides
                 .stream()
                 .filter((ride) -> ride.getDriver().getName().equals(loggedUser.getName()) || ride.getClients().stream().map(User::getName).collect(Collectors.toList()).contains(loggedUser.getName()))
@@ -228,7 +225,7 @@ public class DatabaseManager {
         rideCall.enqueue(new Callback<Ride>() {
             @Override
             public void onResponse(Call<Ride> call, Response<Ride> response) {
-                Toast.makeText(context, "LEft successfully ", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Left successfully ", Toast.LENGTH_LONG).show();
                 getAllRides(context);
             }
 

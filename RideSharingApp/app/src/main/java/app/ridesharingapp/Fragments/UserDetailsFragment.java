@@ -35,7 +35,6 @@ public class UserDetailsFragment extends Fragment {
     public UserDetailsFragment(MainActivity parentActivity) {
         this.parentActivity = parentActivity;
         this.loggedUser = databaseManager.getLoggedUser();
-        System.out.println(loggedUser);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -180,17 +179,8 @@ public class UserDetailsFragment extends Fragment {
 
         //Home button handling
         FloatingActionButton homeButton = fragment.findViewById(R.id.floating_home_button_user);
-//<<<<<<< HEAD
         homeButton.setOnClickListener(v -> parentActivity.switchToHomeFragment());
-//=======
-//        homeButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                parentActivity.switchToHomeFragment();
-//            }
-//        });
-//
-//>>>>>>> a6f655379c9058a274160408c2c1280f2b679a00
+
         return fragment;
     }
     private void updateProfile(){
@@ -247,7 +237,6 @@ public class UserDetailsFragment extends Fragment {
                 String Email = SharedPreferenceUtil.getEmail(getContext());
                 String fullModel = manufacturer + " " + model;
                 Car car = new Car(Email,fullModel,year,_plate,fuel,color);
-                System.out.println(car);
                 databaseManager.getLoggedUser().addCar(car);
 
                 AddCarRequest addCarRequest = new AddCarRequest(Email,fullModel,year,_plate,color,fuel);
