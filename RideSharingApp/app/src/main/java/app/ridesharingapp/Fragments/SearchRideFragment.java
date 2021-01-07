@@ -3,19 +3,15 @@ package app.ridesharingapp.Fragments;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -31,7 +27,6 @@ import java.util.stream.Collectors;
 import app.ridesharingapp.Adapters.PassengersAdapter;
 import app.ridesharingapp.Adapters.RidesAdapter;
 import app.ridesharingapp.Database.DatabaseManager;
-import app.ridesharingapp.LoginActivity;
 import app.ridesharingapp.MainActivity;
 import app.ridesharingapp.MapsActivity;
 import app.ridesharingapp.Model.Date;
@@ -162,29 +157,30 @@ public class SearchRideFragment extends Fragment {
     }
 
     private void displayFoundRides() {
-        String meTime = time.getHour()+":"+time.getMinute();
+        databaseManager.getAllRides(getContext());
+
         List<Ride> rides = databaseManager
                 .retrieveRides()
                 .stream()
                 .filter((ride) ->
-                        ride.getDepartureDate().equals(date) &&
+                        ride.getDepartureDate().equals(date)
 
-                                ride.getNumberOfPassengers() != 0
-//                                &&
+                                && ride.getNumberOfPassengers() != 0
 
-//                                ride.getDepartureTime().equals(meTime)
-//                                &&
+                                && time.lessOrEqual(ride.getDepartureTime())
 
-//                                calculateDistanceInKilometers(ride.getPickupPoint().getLatLng().latitude,
-//                                        ride.getPickupPoint().getLatLng().longitude,
-//                                        startLocation.getLatLng().latitude,
-//                                        startLocation.getLatLng().longitude) < 3 &&
-//
-//                                calculateDistanceInKilometers(ride.getDestination().getLatLng().latitude,
-//                                        ride.getDestination().getLatLng().longitude,
-//                                        destination.getLatLng().latitude,
-//                                        destination.getLatLng().longitude) < 3
+                                && calculateDistanceInKilometers(ride.getPickupPoint().getLatitude(getContext()),
+                                        ride.getPickupPoint().getLongitude(getContext()),
+                                        startLocation.getLatitude(getContext()),
+                                        startLocation.getLongitude(getContext())) < 3
+
+                                && calculateDistanceInKilometers(ride.getDestination().getLatitude(getContext()),
+                                        ride.getDestination().getLongitude(getContext()),
+                                        destination.getLatitude(getContext()),
+                                        destination.getLongitude(getContext())) < 3
+
                                 && !ride.getDriver().getName().equals(databaseManager.getLoggedUser().getName())
+
                                 && !ride.getClients().contains(databaseManager.getLoggedUser())
                 )
                 .collect(Collectors.toList());

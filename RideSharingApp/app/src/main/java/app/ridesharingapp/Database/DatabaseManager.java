@@ -5,9 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import app.ridesharingapp.Fragments.HomeFragment;
 import app.ridesharingapp.LoginActivity;
 import app.ridesharingapp.MainActivity;
 import app.ridesharingapp.Model.Requests.AddCarRequest;
@@ -62,6 +65,7 @@ public class DatabaseManager {
                     Toast.makeText(context, "Register Failed", Toast.LENGTH_LONG).show();
                 }
             }
+
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Toast.makeText(context, "Throwable: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
@@ -92,6 +96,7 @@ public class DatabaseManager {
                     Toast.makeText(context, "Login Failed", Toast.LENGTH_LONG).show();
                 }
             }
+
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Toast.makeText(context, "Throwable: " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
@@ -99,7 +104,7 @@ public class DatabaseManager {
         });
     }
 
-    public void addCar(Context context, AddCarRequest addCarRequest, AlertDialog alert){
+    public void addCar(Context context, AddCarRequest addCarRequest, AlertDialog alert) {
         Call<User> userCall = ApiClient.getUserService().addCar(addCarRequest);
         userCall.enqueue(new Callback<User>() {
             @Override
@@ -115,7 +120,7 @@ public class DatabaseManager {
         });
     }
 
-    public void addRide(Context context,Ride ride) {
+    public void addRide(Context context, Ride ride) {
         AddRideRequest rideRequest = new AddRideRequest();
         rideRequest.setDriver(ride.getDriver().getEmail());
         rideRequest.setAvailablePlaces(ride.getNumberOfPassengers());
@@ -124,11 +129,11 @@ public class DatabaseManager {
         rideRequest.setDepartureTime(ride.getDepartureTime().toString());
 
         ArrayList<Double> pickup = new ArrayList<>();
-        pickup.add(ride.getPickupPoint().getLatLng().latitude);
-        pickup.add(ride.getPickupPoint().getLatLng().longitude);
+        pickup.add(ride.getPickupPoint().getLatitude());
+        pickup.add(ride.getPickupPoint().getLongitude());
         ArrayList<Double> destination = new ArrayList<>();
-        destination.add(ride.getDestination().getLatLng().latitude);
-        destination.add(ride.getDestination().getLatLng().longitude);
+        destination.add(ride.getDestination().getLatitude());
+        destination.add(ride.getDestination().getLongitude());
 
         rideRequest.setPickupName(ride.getPickupPoint().getLocationName());
         rideRequest.setDestinationName(ride.getDestination().getLocationName());
@@ -141,24 +146,25 @@ public class DatabaseManager {
         rideCall.enqueue(new Callback<Ride>() {
             @Override
             public void onResponse(Call<Ride> call, Response<Ride> response) {
+                Toast.makeText(context, "Ride added!", Toast.LENGTH_LONG).show();
+                getAllRides(context);
             }
 
             @Override
             public void onFailure(Call<Ride> call, Throwable t) {
                 Toast.makeText(context, "Add ride error! " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                availableRides.remove(ride);
             }
         });
-        availableRides.add(ride);
+
     }
 
-    public void removeRide(Context context,Ride ride) {
+    public void removeRide(Context context, Ride ride) {
         Call<Ride> rideCall = ApiClient.getUserService().deleteRide(ride.get_id());
         rideCall.enqueue(new Callback<Ride>() {
             @Override
             public void onResponse(Call<Ride> call, Response<Ride> response) {
                 Toast.makeText(context, "Ride deleted! ", Toast.LENGTH_LONG).show();
-                availableRides.remove(ride);
+                getAllRides(context);
             }
 
             @Override
@@ -168,13 +174,14 @@ public class DatabaseManager {
         });
     }
 
-    public void getAllRides(Context context){
+    public void getAllRides(Context context) {
         Call<ArrayList<Ride>> listCall = ApiClient.getUserService().getAllRides();
         listCall.enqueue(new Callback<ArrayList<Ride>>() {
             @Override
             public void onResponse(Call<ArrayList<Ride>> call, Response<ArrayList<Ride>> response) {
                 assert response.body() != null;
                 availableRides = response.body();
+                HomeFragment.getInstance().refreshAdapter();
             }
 
             @Override
@@ -183,6 +190,7 @@ public class DatabaseManager {
             }
         });
     }
+
     public List<Ride> retrieveRides() {
         return availableRides;
     }
@@ -198,10 +206,10 @@ public class DatabaseManager {
         return loggedUser;
     }
 
-    public void joinRide(Context context, String rideID){
+    public void joinRide(Context context, String rideID) {
         JoinRideRequest joinRideRequest = new JoinRideRequest();
         joinRideRequest.setUserEmail(this.loggedUser.getEmail());
-        Call<Ride> rideCall = ApiClient.getUserService().joinRide(rideID,joinRideRequest);
+        Call<Ride> rideCall = ApiClient.getUserService().joinRide(rideID, joinRideRequest);
         rideCall.enqueue(new Callback<Ride>() {
             @Override
             public void onResponse(Call<Ride> call, Response<Ride> response) {
@@ -212,16 +220,15 @@ public class DatabaseManager {
             @Override
             public void onFailure(Call<Ride> call, Throwable t) {
                 Toast.makeText(context, "Failed join ride! " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-
             }
         });
     }
 
-    public void leaveRide(Context context,String rideID){
+    public void leaveRide(Context context, String rideID) {
         JoinRideRequest joinRideRequest = new JoinRideRequest();
         joinRideRequest.setUserEmail(loggedUser.getEmail());
 
-        Call<Ride> rideCall = ApiClient.getUserService().leaveRide(rideID,joinRideRequest);
+        Call<Ride> rideCall = ApiClient.getUserService().leaveRide(rideID, joinRideRequest);
         rideCall.enqueue(new Callback<Ride>() {
             @Override
             public void onResponse(Call<Ride> call, Response<Ride> response) {
@@ -232,7 +239,6 @@ public class DatabaseManager {
             @Override
             public void onFailure(Call<Ride> call, Throwable t) {
                 Toast.makeText(context, "Failed leave ride! " + t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-
             }
         });
     }

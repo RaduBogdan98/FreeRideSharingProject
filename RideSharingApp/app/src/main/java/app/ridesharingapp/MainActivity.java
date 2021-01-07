@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void switchToHomeFragment() {
-        HomeFragment homeFragment = new HomeFragment();
+        HomeFragment homeFragment = HomeFragment.getInstance();
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container_view, homeFragment)

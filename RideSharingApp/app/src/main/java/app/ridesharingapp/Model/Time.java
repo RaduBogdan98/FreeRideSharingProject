@@ -35,8 +35,12 @@ public class Time {
         return sHour + ":" + sMinute;
     }
 
-    public boolean greaterOrEqual(Time time) {
-        return (this.hour > time.getHour()) || (time.getHour() == this.hour && this.minute >= time.getMinute());
+    public boolean lessOrEqual(String departureTime) {
+
+        String[] timeEnitites = departureTime.split(":");
+        Time time = new Time(Integer.parseInt(timeEnitites[0]), Integer.parseInt(timeEnitites[1]));
+
+        return (this.hour < time.getHour()) || (time.getHour() == this.hour && this.minute < time.getMinute());
     }
 
     public boolean isCorrect() {

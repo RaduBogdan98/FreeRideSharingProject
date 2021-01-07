@@ -47,7 +47,7 @@ public class PassengersAdapter extends ArrayAdapter<User> {
 
         if (itemHolder != null){
             if(passenger !=null){
-//                itemHolder.passengerName.setText(passenger.getCompleteName());
+                itemHolder.passengerName.setText(passenger.getCompleteName());
             }
         }
 
